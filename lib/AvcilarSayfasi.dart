@@ -1,18 +1,18 @@
-// kagithaneSayfasi.dart
+// avcilarSayfasi.dart
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-class KagithaneSayfasi extends StatefulWidget {
+class AvcilarSayfasi extends StatefulWidget {
   @override
-  _KagithaneSayfasiState createState() => _KagithaneSayfasiState();
+  _AvcilarSayfasiState createState() => _AvcilarSayfasiState();
 }
 
-class _KagithaneSayfasiState extends State<KagithaneSayfasi> {
+class _AvcilarSayfasiState extends State<AvcilarSayfasi> {
   final Completer<GoogleMapController> _haritaKontrol = Completer();
   final CameraPosition _baslangicKonum = CameraPosition(
-    target: LatLng(41.0912, 29.0063),
+    target: LatLng(40.9793, 28.7214),
     zoom: 14,
   );
 
@@ -37,7 +37,7 @@ class _KagithaneSayfasiState extends State<KagithaneSayfasi> {
       appBar: AppBar(
         backgroundColor: Colors.red[900],
         title: Text(
-          'Kağıthane Restorantlar',
+          'Avcılar Restorantlar',
           style: TextStyle(
             color: Colors.grey[200],
             fontFamily: 'Arial',
