@@ -1,5 +1,7 @@
+// main.dart
 import 'package:flutter/material.dart';
 import 'kagithaneSayfasi.dart';
+import 'avcilarSayfasi.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -105,7 +107,10 @@ class _BodyContentState extends State<BodyContent> {
                         ListTile(
                           title: Text("Avcılar"),
                           onTap: () {
-                            print("Avcılar seçildi");
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => AvcilarSayfasi()),
+                            );
                           },
                         ),
                       ],
