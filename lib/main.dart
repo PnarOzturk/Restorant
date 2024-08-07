@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'kagithaneSayfasi.dart';
 
 void main() {
   runApp(MaterialApp(
-    home: Scaffold( //uygulamanın iskelete yapisi
+    home: Scaffold(
       backgroundColor: Colors.red[50],
-      appBar: AppBar(   //bas kısımdaki yazinin rengin özellikleri, yazi stili
+      appBar: AppBar(
         backgroundColor: Colors.red[900],
         title: Text(
           "Restorant Bul",
@@ -22,30 +23,28 @@ void main() {
   ));
 }
 
-class BodyContent extends StatefulWidget { //durum yönetici widget - gövde kismini olusturur
+class BodyContent extends StatefulWidget {
   @override
   _BodyContentState createState() => _BodyContentState();
 }
 
-class _BodyContentState extends State<BodyContent> { //Durum yönetir
+class _BodyContentState extends State<BodyContent> {
   bool _showOptions = false;
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        // Arka plandaki resim
         Positioned.fill(
           child: Image.network(
             'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fphonewallpaperhd.com%2Fwp-content%2Fuploads%2F2020%2F09%2FFood-Wallpaper-for-Phones.jpg&f=1&nofb=1&ipt=0acab9ec1efcf19a0d30c5f83338af0afdb2400cfeae82c1137c510b7914a9aa&ipo=images',
             fit: BoxFit.cover,
           ),
         ),
-        // Üstteki metin ve seçenekler
         Center(
           child: Container(
             padding: EdgeInsets.all(16),
-            color: Colors.red[50]?.withOpacity(0.8), // Arka planın biraz opak olması icin
+            color: Colors.red[50]?.withOpacity(0.8),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -61,7 +60,7 @@ class _BodyContentState extends State<BodyContent> { //Durum yönetir
                 InkWell(
                   onTap: () {
                     setState(() {
-                      _showOptions = !_showOptions; //Seçenek görünürlügünü yönetir
+                      _showOptions = !_showOptions;
                     });
                   },
                   child: Container(
@@ -90,14 +89,17 @@ class _BodyContentState extends State<BodyContent> { //Durum yönetir
                 ),
                 if (_showOptions)
                   Container(
-                    height: 100, // Scrolling için sabit yükseklik
+                    height: 100,
                     margin: EdgeInsets.only(top: 10),
                     child: ListView(
                       children: [
                         ListTile(
                           title: Text("Kağıthane"),
                           onTap: () {
-                            print("Kağıthane seçildi");
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => KagithaneSayfasi()),
+                            );
                           },
                         ),
                         ListTile(
