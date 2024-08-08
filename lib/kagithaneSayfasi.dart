@@ -1,11 +1,13 @@
-import 'dart:async'; //Asenkron kullanım icin gerekli kütüphane
-import 'package:flutter/material.dart'; //Flutter matrial widgetsleri icin gerekli kütüphane
-import 'package:google_maps_flutter/google_maps_flutter.dart'; //Google maps widgetsleri icin gerekli kütüphane
-import 'package:permission_handler/permission_handler.dart'; //konum izni icin gerekli kütüphane
+import 'dart:async';
+import 'package:deneme20/YorThusRestorant.dart'; // Doğru yolu buraya ekleyin
+import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart'; // RatingBarIndicator için gerekli
 
-class KagithaneSayfasi extends StatefulWidget { //widgets durumuna baglı olarak degismesi icin
+class KagithaneSayfasi extends StatefulWidget {
   @override
-  _KagithaneSayfasiState createState() => _KagithaneSayfasiState(); //durum yönetimi icin state nesnesi olusturur
+  _KagithaneSayfasiState createState() => _KagithaneSayfasiState();
 }
 
 class _KagithaneSayfasiState extends State<KagithaneSayfasi> {
@@ -13,45 +15,85 @@ class _KagithaneSayfasiState extends State<KagithaneSayfasi> {
   final CameraPosition _baslangicKonum = CameraPosition(
     target: LatLng(41.0912, 29.0063),
     zoom: 14,
-  ); //Harita kontrolleri icin gerekli sinif ve completer nesnesi olusturduk bu asenkron yönetmeyi saglar zoom oranı, kamera pozisyonu baslangic konumu vs.
+  );
 
-  final List<Marker> _konumlar = [ //haritadaki konumlari gösteren liste olusturduk
-    Marker(
-      markerId: MarkerId('Teker'),
-      position: LatLng(41.0912, 29.0163), // konumu ve restorant ismi id ayarlama
-      infoWindow: InfoWindow(title: 'Teker Restorant'),
-    ),
-    Marker(
-      markerId: MarkerId('Demir'),
-      position: LatLng(41.1012, 29.0063), // konum ve restorant ismi id ayarlama
-      infoWindow: InfoWindow(title: 'Demir Restorant'),
-    ),
-    Marker(
-      markerId: MarkerId('YorThus'),
-      position: LatLng(41.0812, 29.0063), // konum ve restorant ismi id ayari
-      infoWindow: InfoWindow(title: 'YorThus Restorant'),
-    ), //Harita üzerinden secilecek konum bilgileri idleri ve isimleri daha sonra tiklanabilir yapilmasi lazim
-  ];
+  final List<Marker> _konumlar = [];
+  String _selectedRestaurant = '';
+  double _rating = 0.0; // Puan
+  String _description = '';
 
   @override
-  void initState() { //Widget baslangic metotu izinler icin gerekli
+  void initState() {
     super.initState();
     _requestLocationPermission();
+    _loadMarkers();
   }
 
-  Future<void> _requestLocationPermission() async { //asenkron fonksiyon kullanicidan konum isteme ve reddedilme durumlarını yönetmek icin
+  Future<void> _requestLocationPermission() async {
     final status = await Permission.location.request();
     if (status.isGranted) {
-      print("Konuma izin verildi"); //izin verildiğinde cikan mesaj
+      print("Konuma izin verildi");
     } else {
-      print("Konum reddedildi"); //reddedildiginde cikan mesaj
+      print("Konum reddedildi");
     }
   }
 
+  void _loadMarkers() {
+    _konumlar.addAll([
+      Marker(
+        markerId: MarkerId('Teker'),
+        position: LatLng(41.0912, 29.0163),
+        infoWindow: InfoWindow(title: 'Teker Restorant',
+          snippet: 'Zarif bir ortamda unutulmaz lezzetler',
+          onTap: () {
+            setState(() {
+              _selectedRestaurant = 'Teker Restorant';
+              _rating = 3.8;
+              _description = '2000 yılından beri hizmetinizde olan Teker Restorant, ferah ve rahat ortamıyla yemeklerinizin keyfini çıkarabilmeniz için özenle tasarlandı. Lezzetli menümüz ve samimi hizmet anlayışımızla sizleri ağırlamaktan mutluluk duyuyoruz.';
+            });
+          },
+        ),
+      ),
+      Marker(
+        markerId: MarkerId('Demir'),
+        position: LatLng(41.1012, 29.0063),
+        infoWindow: InfoWindow(
+            title: 'Demir Restorant',
+                snippet: 'Şehirden kaçış, lezzetten keyif',
+          onTap: () {
+            setState(() {
+              _selectedRestaurant = 'Demir Restorant';
+              _rating = 4;
+              _description = '2005 yılından bu yana sizlere hizmet eden Demir Restorant, doğal ve huzurlu atmosferiyle şehir hayatının karmaşasından uzaklaşmanızı sağlar. Lezzetli yemeklerimiz ve dikkatli servisimizle sizleri memnun etmek için buradayız.';
+            });
+          },
+
+
+
+        ),
+      ),
+      Marker(
+        markerId: MarkerId('YorThus'),
+        position: LatLng(41.0812, 29.0063),
+        infoWindow: InfoWindow(
+          title: 'YorThus Restorant',
+          snippet: 'Harika yemekler ve mükemmel bir atmosfer',
+          onTap: () {
+            setState(() {
+              _selectedRestaurant = 'YorThus Restorant';
+              _rating = 4.5;
+              _description = '1995 yılından beri misafirlerine eşsiz bir deneyim sunan YorThus, sakin ve huzurlu atmosferi ile tanınır. Lezzetli yemeklerimiz ve özenle hazırlanmış menümüzle siz değerli konuklarımıza kaliteli bir hizmet sunmayı amaçlıyoruz.';
+            });
+          },
+        ),
+      ),
+    ]);
+  }
+
   @override
-  Widget build(BuildContext context) { //Widget agaci
+  Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar( //üssteki bar
+      appBar: AppBar(
         backgroundColor: Colors.red[900],
         title: Text(
           'Kağıthane Restorantlar',
@@ -64,12 +106,64 @@ class _KagithaneSayfasiState extends State<KagithaneSayfasi> {
         ),
         centerTitle: true,
       ),
-      body: GoogleMap( //body kismi , harita widgeti
-        initialCameraPosition: _baslangicKonum,
-        onMapCreated: (GoogleMapController controller) {
-          _haritaKontrol.complete(controller);
-        },
-        markers: Set<Marker>.of(_konumlar),
+      body: Stack(
+        children: [
+          GoogleMap(
+            initialCameraPosition: _baslangicKonum,
+            onMapCreated: (GoogleMapController controller) {
+              _haritaKontrol.complete(controller);
+            },
+            markers: Set<Marker>.of(_konumlar),
+          ),
+          if (_selectedRestaurant.isNotEmpty)
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Yorthusrestorant(
+                        title: _selectedRestaurant,
+                        description: _description,
+                        rating: _rating,
+                      ),
+                    ),
+                  );
+                },
+                child: Container(
+                  color: Colors.white,
+                  padding: EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        _selectedRestaurant,
+                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      RatingBarIndicator(
+                        rating: _rating,
+                        itemBuilder: (context, index) => Icon(
+                          Icons.star,
+                          color: Colors.amber,
+                        ),
+                        itemCount: 5,
+                        itemSize: 30.0,
+                        direction: Axis.horizontal,
+                      ),
+                      SizedBox(height: 8),
+                      Text(
+                        _description,
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+        ],
       ),
     );
   }

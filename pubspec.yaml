@@ -12,8 +12,9 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.6
-  google_maps_flutter: ^2.1.1  # Güncel sürüm
-  permission_handler: ^11.3.1  # Uyumlu sürüm
+  google_maps_flutter: ^2.1.1
+  permission_handler: ^11.3.1
+  flutter_rating_bar: ^4.0.1  # Uyumlu sürüm
 
 dev_dependencies:
   flutter_test:
