@@ -29,6 +29,7 @@ class _KagithaneSayfasiState extends State<KagithaneSayfasi> {
   String _selectedRestaurant = '';
   double _rating = 0.0; // Puan
   String _description = '';
+  bool _isYorThus = false; // YorThus seçili mi kontrolü
   List<Marker> _konumlar = [];
 
   @override
@@ -97,16 +98,17 @@ class _KagithaneSayfasiState extends State<KagithaneSayfasi> {
       infoWindow: InfoWindow(
         title: title,
         snippet: snippet,
-        onTap: () => _onMarkerTapped(title, rating, description),
+        onTap: () => _onMarkerTapped(id, title, rating, description),
       ),
     );
   }
 
-  void _onMarkerTapped(String restaurant, double rating, String description) {
+  void _onMarkerTapped(String id, String restaurant, double rating, String description) {
     setState(() {
       _selectedRestaurant = restaurant;
       _rating = rating;
       _description = description;
+      _isYorThus = id == 'YorThus';
     });
   }
 
@@ -211,6 +213,25 @@ class _KagithaneSayfasiState extends State<KagithaneSayfasi> {
                             _description,
                             style: TextStyle(fontSize: 16),
                           ),
+                          if (_isYorThus)
+                            TextButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => Yorthusrestorant(
+                                      title: _selectedRestaurant,
+                                      description: _description,
+                                      rating: _rating,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                'Seç',
+                                style: TextStyle(color: Colors.blue),
+                              ),
+                            ),
                         ],
                       ),
                     ),
