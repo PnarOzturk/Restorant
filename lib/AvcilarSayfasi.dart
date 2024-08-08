@@ -1,4 +1,3 @@
-// avcilarSayfasi.dart
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -16,6 +15,24 @@ class _AvcilarSayfasiState extends State<AvcilarSayfasi> {
     zoom: 14,
   );
 
+  final List<Marker> _konumlar1 = [
+    Marker(
+      markerId: MarkerId('Sehnaz'),
+      position: LatLng(40.9893, 28.7224),
+      infoWindow: InfoWindow(title: 'Sehnaz Restorant'),
+    ),
+    Marker(
+      markerId: MarkerId('Sirius'),
+      position: LatLng(40.9793, 28.7134),
+      infoWindow: InfoWindow(title: 'Sirius Restorant'),
+    ),
+    Marker(
+      markerId: MarkerId('Ercel'),
+      position: LatLng(40.9793, 28.7014),
+      infoWindow: InfoWindow(title: 'Erçel Restorant'),
+    ),
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -25,9 +42,9 @@ class _AvcilarSayfasiState extends State<AvcilarSayfasi> {
   Future<void> _requestLocationPermission() async {
     final status = await Permission.location.request();
     if (status.isGranted) {
-      print("Location permission granted");
+      print("Konuma izin verildi");
     } else {
-      print("Location permission denied");
+      print("Konum reddedildi");
     }
   }
 
@@ -52,6 +69,7 @@ class _AvcilarSayfasiState extends State<AvcilarSayfasi> {
         onMapCreated: (GoogleMapController controller) {
           _haritaKontrol.complete(controller);
         },
+        markers: Set<Marker>.of(_konumlar1),
       ),
     );
   }
