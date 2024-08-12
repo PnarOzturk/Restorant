@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'masa_duzeni_sayfasi.dart'; // Yeni sayfayı import et
 
 class Yorthusrestorant extends StatelessWidget {
-  final String title; //sabit degiskenler "final"
+  final String title;
   final String description;
   final double rating;
 
@@ -25,15 +26,15 @@ class Yorthusrestorant extends StatelessWidget {
             image: NetworkImage(
               'https://iphonexpapers.com/wp-content/uploads/papers.co-mz21-food-style-eat-dish-41-iphone-wallpaper-240x519.jpg',
             ),
-            fit: BoxFit.cover, //resim tamamen container 'ı kaplasın diye yaptik
+            fit: BoxFit.cover,
           ),
         ),
-        child: Padding( //boşluk düzenleme
+        child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              RatingBarIndicator( //puanlama kısmı ayarları
+              RatingBarIndicator(
                 rating: rating,
                 itemBuilder: (context, index) => Icon(
                   Icons.star,
@@ -55,7 +56,7 @@ class Yorthusrestorant extends StatelessWidget {
                   children: [
                     ElevatedButton(
                       onPressed: () {
-                        // Menü butonuna tıklama olması için gerekli method
+                        // Menü butonuna tıklama işlemi
                       },
                       child: Text('Menü', style: TextStyle(color: Colors.white)),
                       style: ElevatedButton.styleFrom(
@@ -65,13 +66,18 @@ class Yorthusrestorant extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 16),
-                    ElevatedButton( //tıklanabilir butonu ayarlama
+                    ElevatedButton(
                       onPressed: () {
-
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MasaDuzeniSayfasi(),
+                          ),
+                        );
                       },
                       child: Text('Masa Düzeni', style: TextStyle(color: Colors.white)),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red[900], // Buton rengi
+                        backgroundColor: Colors.red[900],
                         padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
                         textStyle: TextStyle(fontSize: 20),
                       ),
@@ -79,15 +85,14 @@ class Yorthusrestorant extends StatelessWidget {
                   ],
                 ),
               ),
-              Spacer(), //yer tutucu widget
-              // Bize Ulaşın DropdownButton
+              Spacer(),
               Padding(
                 padding: const EdgeInsets.only(top: 20.0),
                 child: Container(
-                  color: Color(212121), // Dropdown arka plan rengi
+                  color: Color(0xFF212121), // Dropdown arka plan rengi
                   child: DropdownButton<String>(
                     hint: Text('Bize Ulaşın', style: TextStyle(color: Colors.white)),
-                    dropdownColor: Color(212121), // Dropdown arka plan rengi
+                    dropdownColor: Color(0xFF212121), // Dropdown arka plan rengi
                     style: TextStyle(color: Colors.white),
                     value: null,
                     onChanged: (String? newValue) {
