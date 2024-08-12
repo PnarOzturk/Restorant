@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:deneme20/KahveBahane.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -7,6 +6,7 @@ import 'package:deneme20/Yorthusrestorant.dart';
 import 'package:deneme20/DemirRestorant.dart';
 import 'package:deneme20/ZeytinAdi.dart';
 import 'package:deneme20/TatliDusler.dart';
+import 'package:deneme20/KahveBahane.dart';
 
 class KagithaneSayfasi extends StatefulWidget {
   @override
@@ -28,15 +28,10 @@ class _KagithaneSayfasiState extends State<KagithaneSayfasi> {
     'Tatlı': [],
   };
 
-  String _selectedRestaurantType = '';
+  String? _selectedRestaurantType; // İlgili tür seçili değilken null
   String _selectedRestaurant = '';
   double _rating = 0.0;
   String _description = '';
-  bool _isYorThus = false;
-  bool _isDemir = false;
-  bool _isKahveBahane = false;
-  bool _isZeytinAdi = false;
-  bool _isTatliDusler = false;
   List<Marker> _konumlar = [];
 
   @override
@@ -87,7 +82,7 @@ class _KagithaneSayfasiState extends State<KagithaneSayfasi> {
   void _loadMarkers() {
     setState(() {
       _konumlar.clear();
-      if (_selectedRestaurantType.isEmpty) {
+      if (_selectedRestaurantType == null || _selectedRestaurantType == 'Hepsi') {
         _restaurantTypes.forEach((_, markers) {
           _konumlar.addAll(markers);
         });
@@ -114,69 +109,33 @@ class _KagithaneSayfasiState extends State<KagithaneSayfasi> {
       _selectedRestaurant = restaurant;
       _rating = rating;
       _description = description;
-      _isYorThus = id == 'YorThus';
-      _isDemir = id == 'Demir';
-      _isKahveBahane = id == 'Kahve_Bahane';
-      _isZeytinAdi = id == 'Zeytin_adi';
-      _isTatliDusler = id == 'Tatlı_Düşler';
     });
 
-    if (id == 'YorThus') {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => Yorthusrestorant(
-            title: _selectedRestaurant,
-            description: _description,
-            rating: _rating,
-          ),
-        ),
-      );
-    } else if (id == 'Demir') {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => DemirRestorant(
-            title: _selectedRestaurant,
-            description: _description,
-            rating: _rating,
-          ),
-        ),
-      );
-    } else if (id == 'Kahve_Bahane') {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => KahveBahane(
-            title: _selectedRestaurant,
-            description: _description,
-            rating: _rating,
-          ),
-        ),
-      );
-    } else if (id == 'Zeytin_adi') {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => Zeytinadi(
-            title: _selectedRestaurant,
-            description: _description,
-            rating: _rating,
-          ),
-        ),
-      );
-    } else if (id == 'Tatlı_Düşler') {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => TatliDusler(
-            title: _selectedRestaurant,
-            description: _description,
-            rating: _rating,
-          ),
-        ),
-      );
+    Widget page;
+    switch (id) {
+      case 'YorThus':
+        page = Yorthusrestorant(title: restaurant, description: description, rating: rating);
+        break;
+      case 'Demir':
+        page = DemirRestorant(title: restaurant, description: description, rating: rating);
+        break;
+      case 'Kahve_Bahane':
+        page = KahveBahane(title: restaurant, description: description, rating: rating);
+        break;
+      case 'Zeytin_adi':
+        page = Zeytinadi(title: restaurant, description: description, rating: rating);
+        break;
+      case 'Tatlı_Düşler':
+        page = TatliDusler(title: restaurant, description: description, rating: rating);
+        break;
+      default:
+        page = Container(); // Default empty container to handle unknown cases
     }
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => page),
+    );
   }
 
   @override
@@ -193,34 +152,42 @@ class _KagithaneSayfasiState extends State<KagithaneSayfasi> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        actions: [
-          PopupMenuButton<String>(
-            onSelected: (String value) {
-              setState(() {
-                _selectedRestaurantType = value;
-                _loadMarkers();
-              });
-            },
-            itemBuilder: (BuildContext context) {
-              return [
-                PopupMenuItem(value: '', child: Text('Hepsi')),
-                PopupMenuItem(value: 'Akdeniz Mutfağı', child: Text('Akdeniz Mutfağı')),
-                PopupMenuItem(value: 'Türk Mutfağı', child: Text('Türk Mutfağı')),
-                PopupMenuItem(value: 'Kafe', child: Text('Kafe')),
-                PopupMenuItem(value: 'Dünya Mutfağı', child: Text('Dünya Mutfağı')),
-                PopupMenuItem(value: 'Tatlı', child: Text('Tatlı')),
-              ];
-            },
+      ),
+      body: Column(
+        children: [
+          Container(
+            padding: EdgeInsets.all(8.0),
+            color: Colors.white, // Dropdown menüsünün arka plan rengi
+            child: DropdownButton<String>(
+              value: _selectedRestaurantType,
+              hint: Text('Tür Seçiniz', style: TextStyle(color: Colors.black)),
+              dropdownColor: Colors.red[800], // Dropdown menüsünün arka plan rengi
+              items: <String>['Hepsi', 'Akdeniz Mutfağı', 'Türk Mutfağı', 'Kafe', 'Dünya Mutfağı', 'Tatlı']
+                  .map((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value, style: TextStyle(color: Colors.white)),
+                );
+              }).toList(),
+              onChanged: (String? newValue) {
+                setState(() {
+                  _selectedRestaurantType = newValue;
+                  _loadMarkers();
+                });
+              },
+            ),
+          ),
+          Expanded(
+            child: GoogleMap(
+              mapType: MapType.normal,
+              initialCameraPosition: _baslangicKonum,
+              markers: Set<Marker>.of(_konumlar),
+              onMapCreated: (GoogleMapController controller) {
+                _haritaKontrol.complete(controller);
+              },
+            ),
           ),
         ],
-      ),
-      body: GoogleMap(
-        mapType: MapType.normal,
-        initialCameraPosition: _baslangicKonum,
-        markers: Set<Marker>.of(_konumlar),
-        onMapCreated: (GoogleMapController controller) {
-          _haritaKontrol.complete(controller);
-        },
       ),
     );
   }
