@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'masa_duzeni_sayfasi.dart'; // Yeni sayfayı import et
+import 'YorThusRestorantMenuPage.dart'; // Menü sayfasını import et
 
 class Yorthusrestorant extends StatelessWidget {
   final String title;
@@ -56,7 +57,12 @@ class Yorthusrestorant extends StatelessWidget {
                   children: [
                     ElevatedButton(
                       onPressed: () {
-                        // Menü butonuna tıklama işlemi
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => YorThusRestorantMenuPage(),
+                          ),
+                        );
                       },
                       child: Text('Menü', style: TextStyle(color: Colors.white)),
                       style: ElevatedButton.styleFrom(
