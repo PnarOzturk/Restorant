@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'KahveBahaneMenuPage.dart'; // Import the menu page
 
 class KahveBahane extends StatelessWidget {
   final String title;
@@ -40,7 +41,7 @@ class KahveBahane extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Restaurant bilgileri
+              // Coffee shop details
               Text(
                 title,
                 style: TextStyle(
@@ -72,14 +73,17 @@ class KahveBahane extends StatelessWidget {
                 ),
               ),
               Spacer(),
-              // Menü ve masa düzeni butonları
+              // Menu and table arrangement buttons
               Center(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     ElevatedButton(
                       onPressed: () {
-                        // Menü sayfasına gitmek için
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => KahveBahaneMenuPage()), // Navigate to menu page
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.brown[800],
@@ -93,7 +97,7 @@ class KahveBahane extends StatelessWidget {
                     SizedBox(height: 16),
                     ElevatedButton(
                       onPressed: () {
-                        // Masa düzeni sayfasına gitmek için
+                        // Navigate to table arrangement page
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.brown[800],

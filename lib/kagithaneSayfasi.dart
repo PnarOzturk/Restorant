@@ -52,7 +52,7 @@ class _KagithaneSayfasiState extends State<KagithaneSayfasi> {
 
   void _initializeMarkers() {
     _restaurantTypes['Akdeniz Mutfağı']?.add(
-      _createMarker('Zeytin_adi', LatLng(41.0897, 29.0092), 'Zeytin Bahçesi', 'Akdeniz’in Tadını Getiriyoruz', 4.3, 'Akdeniz mutfağından taze lezzetler sunan bu mekan, mükemmel bir yemek deneyimi sunar.'),
+      _createMarker('Zeytin_adi', LatLng(41.0897, 29.0092), 'Zeytin Adı', 'Akdeniz’in Tadını Getiriyoruz', 4.3, 'Akdeniz mutfağından taze lezzetler sunan bu mekan, mükemmel bir yemek deneyimi sunar.'),
     );
 
     _restaurantTypes['Türk Mutfağı']?.addAll([

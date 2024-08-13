@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'DemirRestorantMenuPage.dart'; // Yeni sayfayı import edin
 
 class DemirRestorant extends StatelessWidget {
   final String title;
@@ -26,7 +27,7 @@ class DemirRestorant extends StatelessWidget {
         decoration: BoxDecoration(
           image: DecorationImage(
             image: NetworkImage(
-              'https://iphonexpapers.com/wp-content/uploads/papers.co-ms55-brunch-cuba-food-city-art-vacation-dark-41-iphone-wallpaper-240x519.jpg',
+              'https://iphonexpapers.com/wp-content/uploads/papers.co-mj88-steakhouse-food-delicious-41-iphone-wallpaper-240x519.jpg'
             ),
             fit: BoxFit.cover,
           ),
@@ -63,7 +64,12 @@ class DemirRestorant extends StatelessWidget {
                   children: [
                     ElevatedButton(
                       onPressed: () {
-                        // Menü butonuna tıklama işlemi
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DemirRestorantMenuPage(),
+                          ),
+                        );
                       },
                       child: Text('Menü', style: TextStyle(color: Colors.white)),
                       style: ElevatedButton.styleFrom(

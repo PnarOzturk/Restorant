@@ -26,10 +26,10 @@ class YorThusRestorantMenuPage extends StatelessWidget {
   ];
 
   final List<MenuItem> desserts = [
-    MenuItem(name: 'Baklava', description: 'Pistachio and honey layers of phyllo dough.', price: 135.0, imageUrl: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.6r1V6UOauaaUj4O7eL4gSQHaE8%26pid%3DApi&f=1&ipt=bf5cd6cd5f704f59aa2aaa4c13437e4b8505f0bf8c34b3aa434e470ce3db06a5&ipo=images'),
-    MenuItem(name: 'Künefe', description: 'Sweet cheese pastry soaked in syrup.', price: 140.0, imageUrl: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse3.explicit.bing.net%2Fth%3Fid%3DOIP.hsFqlAlB0bE9cX1I2VIosAHaE8%26pid%3DApi&f=1&ipt=247d93319d7c362beba0dba5d552fd4cdf647d8b2efa864db6a167a0dab1817a&ipo=images'),
-    MenuItem(name: 'Profiterol', description: 'Cream-filled puff pastry with chocolate sauce.', price: 145.0, imageUrl: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.haFbWRbirMDa6qu_cVZC6AHaFj%26pid%3DApi&f=1&ipt=d77c5866994c2cbce025e2447d1028fea99619ee31d7389d34bb2a38f1f93193&ipo=images'),
-    MenuItem(name: 'Sütlaç', description: 'Rice pudding with a hint of vanilla.', price: 130.0, imageUrl: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse4.mm.bing.net%2Fth%3Fid%3DOIP.BqJnAf4OSgYALol0nNYgwwHaE7%26pid%3DApi&f=1&ipt=fbda556d363fc270bcd7549dabaa8fc7864f215e831901fc1d710f1405dfaf5c&ipo=images'),
+    MenuItem(name: 'Baklava', description: 'Fıstık ve bal katmanlarına sahip yufka hamuru.', price: 135.0, imageUrl: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.6r1V6UOauaaUj4O7eL4gSQHaE8%26pid%3DApi&f=1&ipt=bf5cd6cd5f704f59aa2aaa4c13437e4b8505f0bf8c34b3aa434e470ce3db06a5&ipo=images'),
+    MenuItem(name: 'Künefe', description: 'Şerbetle ıslatılmış tatlı peynir hamuru.', price: 140.0, imageUrl: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse3.explicit.bing.net%2Fth%3Fid%3DOIP.hsFqlAlB0bE9cX1I2VIosAHaE8%26pid%3DApi&f=1&ipt=247d93319d7c362beba0dba5d552fd4cdf647d8b2efa864db6a167a0dab1817a&ipo=images'),
+    MenuItem(name: 'Profiterol', description: 'Kremalı hamur topları üzerine çikolata sosu.', price: 145.0, imageUrl: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.haFbWRbirMDa6qu_cVZC6AHaFj%26pid%3DApi&f=1&ipt=d77c5866994c2cbce025e2447d1028fea99619ee31d7389d34bb2a38f1f93193&ipo=images'),
+    MenuItem(name: 'Sütlaç', description: 'Vanilya aromalı pirinç pudingi.', price: 130.0, imageUrl: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse4.mm.bing.net%2Fth%3Fid%3DOIP.BqJnAf4OSgYALol0nNYgwwHaE7%26pid%3DApi&f=1&ipt=fbda556d363fc270bcd7549dabaa8fc7864f215e831901fc1d710f1405dfaf5c&ipo=images'),
   ];
 
   @override
