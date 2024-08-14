@@ -1,4 +1,17 @@
-// android/app/build.gradle
+// android/build.gradle
+
+buildscript {
+    ext.kotlin_version = '1.8.0' // En güncel Kotlin sürümünü kullanın
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:8.1.0" // Android Gradle Plugin sürümünü güncel tutun
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "com.google.gms:google-services:4.3.15" // Firebase Google Services Plugin
+    }
+}
 
 plugins {
     id "com.android.application"

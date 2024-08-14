@@ -1,3 +1,17 @@
+// Top-level build.gradle file
+
+buildscript {
+    ext.kotlin_version = '1.9.0' // En son Kotlin sürümünü kullanın
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.3.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
 allprojects {
     repositories {
         google()
