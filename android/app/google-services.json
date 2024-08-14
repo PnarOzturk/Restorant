@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "378619364320",
+    "project_id": "restoranotomasyon-72cb9",
+    "storage_bucket": "restoranotomasyon-72cb9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:378619364320:android:d558dd2ce7f8c92d6de185",
+        "android_client_info": {
+          "package_name": "com.example.deneme20"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyArscL3hx3xcHm-Ty__C8czoXfWtWLLFyc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

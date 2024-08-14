@@ -1,28 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'kagithaneSayfasi.dart';
 import 'avcilarSayfasi.dart';
 import 'GirisYapSayfasi.dart'; // Giriş yap sayfanızı import edin
 
-void main() {
-  runApp(MaterialApp(
-    home: Scaffold(
-      backgroundColor: Colors.red[50],
-      appBar: AppBar(
-        backgroundColor: Colors.red[900],
-        title: Text(
-          "Restorant Bul",
-          style: TextStyle(
-            color: Colors.grey[200],
-            fontFamily: 'Arial',
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        backgroundColor: Colors.red[50],
+        appBar: AppBar(
+          backgroundColor: Colors.red[900],
+          title: Text(
+            "Restorant Bul",
+            style: TextStyle(
+              color: Colors.grey[200],
+              fontFamily: 'Arial',
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
           ),
+          centerTitle: true,
         ),
-        centerTitle: true,
+        body: BodyContent(),
       ),
-      body: BodyContent(),
-    ),
-  ));
+    );
+  }
 }
 
 class BodyContent extends StatefulWidget {
