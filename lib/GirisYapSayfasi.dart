@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'hesapOlusturSayfasi.dart';
+import 'main.dart'; // Ana sayfa (main.dart) dosyasını içe aktar
 
 class GirisYapSayfasi extends StatefulWidget {
   @override
@@ -30,7 +31,11 @@ class _GirisYapSayfasiState extends State<GirisYapSayfasi> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Giriş Yapıldı!')),
       );
-      // Giriş başarılı, istenilen yere yönlendirme yapılabilir
+      // Giriş başarılı, ana sayfaya yönlendirme yapılabilir
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => MyApp()), // Ana sayfayı buraya ekleyin
+      );
     } catch (e) {
       String errorMessage = 'Giriş başarısız';
 
