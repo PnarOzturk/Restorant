@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'girisYapSayfasi.dart';
 
 class HesapOlusturSayfasi extends StatefulWidget {
   @override
@@ -10,44 +9,35 @@ class HesapOlusturSayfasi extends StatefulWidget {
 class _HesapOlusturSayfasiState extends State<HesapOlusturSayfasi> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-
-  void _navigateToLogin() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => GirisYapSayfasi()),
-    );
-  }
+  final _confirmPasswordController = TextEditingController();
+  final _displayNameController = TextEditingController();
 
   Future<void> _createAccount() async {
-    String email = _emailController.text;
-    String password = _passwordController.text;
+    final email = _emailController.text;
+    final password = _passwordController.text;
+    final confirmPassword = _confirmPasswordController.text;
+    final displayName = _displayNameController.text;
+
+    if (password != confirmPassword) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Şifreler uyuşmuyor!')),
+      );
+      return;
+    }
 
     try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      final UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
+      await userCredential.user!.updateProfile(displayName: displayName);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Hesap Oluşturuldu!')),
+        SnackBar(content: Text('Hesap oluşturuldu!')),
       );
-      // Hesap oluşturma başarılı, istenilen yere yönlendirme yapılabilir
-      // Örneğin, giriş sayfasına yönlendirme yapılabilir
-      // Navigator.pushReplacement(
-      //   context,
-      //   MaterialPageRoute(builder: (context) => GirisYapSayfasi()),
-      // );
+      Navigator.pop(context);
     } catch (e) {
-      String errorMessage = 'Hesap oluşturulamadı';
-
-      if (e is FirebaseAuthException) {
-        errorMessage = e.message ?? errorMessage;
-      } else {
-        errorMessage = e.toString();
-      }
-
-      print("Kayıt hatası: $errorMessage"); // Hata mesajını konsola yazdırın
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(errorMessage)),
+        SnackBar(content: Text('Hesap oluşturma başarısız: ${e.toString()}')),
       );
     }
   }
@@ -58,17 +48,18 @@ class _HesapOlusturSayfasiState extends State<HesapOlusturSayfasi> {
       appBar: AppBar(
         backgroundColor: Colors.red[900],
         title: Text(
-          "Hesap Oluştur",
+          'Hesap Oluştur',
           style: TextStyle(
-            color: Colors.grey[200],
             fontFamily: 'Arial',
             fontSize: 24,
             fontWeight: FontWeight.bold,
+            color: Colors.white, // Yazı rengini beyaz yaptım
           ),
         ),
         centerTitle: true,
       ),
       body: Stack(
+        fit: StackFit.expand,
         children: [
           Positioned.fill(
             child: Image.network(
@@ -76,13 +67,11 @@ class _HesapOlusturSayfasiState extends State<HesapOlusturSayfasi> {
               fit: BoxFit.cover,
             ),
           ),
-          Center(
-            child: SingleChildScrollView(
-              padding: EdgeInsets.all(16),
+          SingleChildScrollView(
+            child: Center(
               child: Container(
-                width: double.infinity,
-                constraints: BoxConstraints(maxWidth: 400),
                 padding: EdgeInsets.all(16),
+                margin: EdgeInsets.symmetric(horizontal: 16),
                 decoration: BoxDecoration(
                   color: Colors.red[50]?.withOpacity(0.8),
                   borderRadius: BorderRadius.circular(8),
@@ -96,52 +85,117 @@ class _HesapOlusturSayfasiState extends State<HesapOlusturSayfasi> {
                 ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Text(
-                      "Hesap Oluştur",
-                      style: TextStyle(
-                        fontFamily: 'Arial',
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.red[900],
+                    Container(
+                      padding: EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Colors.red[50]?.withOpacity(0.8),
+                        borderRadius: BorderRadius.circular(8),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black26,
+                            blurRadius: 8,
+                            offset: Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: TextField(
+                        controller: _displayNameController,
+                        decoration: InputDecoration(
+                          labelText: 'Ad Soyad',
+                          border: OutlineInputBorder(),
+                          filled: true,
+                          fillColor: Colors.red[50]?.withOpacity(0.8),
+                        ),
                       ),
                     ),
-                    SizedBox(height: 20),
-                    TextField(
-                      controller: _emailController,
-                      decoration: InputDecoration(
-                        labelText: "E-posta",
-                        border: OutlineInputBorder(),
-                        prefixIcon: Icon(Icons.email),
+                    SizedBox(height: 16),
+                    Container(
+                      padding: EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Colors.red[50]?.withOpacity(0.8),
+                        borderRadius: BorderRadius.circular(8),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black26,
+                            blurRadius: 8,
+                            offset: Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: TextField(
+                        controller: _emailController,
+                        decoration: InputDecoration(
+                          labelText: 'E-posta',
+                          border: OutlineInputBorder(),
+                          filled: true,
+                          fillColor: Colors.red[50]?.withOpacity(0.8),
+                        ),
                       ),
                     ),
-                    SizedBox(height: 20),
-                    TextField(
-                      controller: _passwordController,
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        labelText: "Şifre",
-                        border: OutlineInputBorder(),
-                        prefixIcon: Icon(Icons.lock),
+                    SizedBox(height: 16),
+                    Container(
+                      padding: EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Colors.red[50]?.withOpacity(0.8),
+                        borderRadius: BorderRadius.circular(8),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black26,
+                            blurRadius: 8,
+                            offset: Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: TextField(
+                        controller: _passwordController,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          labelText: 'Şifre',
+                          border: OutlineInputBorder(),
+                          filled: true,
+                          fillColor: Colors.red[50]?.withOpacity(0.8),
+                        ),
                       ),
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(height: 16),
+                    Container(
+                      padding: EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Colors.red[50]?.withOpacity(0.8),
+                        borderRadius: BorderRadius.circular(8),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black26,
+                            blurRadius: 8,
+                            offset: Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: TextField(
+                        controller: _confirmPasswordController,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          labelText: 'Şifre Tekrar',
+                          border: OutlineInputBorder(),
+                          filled: true,
+                          fillColor: Colors.red[50]?.withOpacity(0.8),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 32),
                     ElevatedButton(
                       onPressed: _createAccount,
-                      child: Text("Hesap Oluştur"),
+                      child: Text('Hesap Oluştur'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.red[900],
                         foregroundColor: Colors.white,
-                        padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-                        textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    TextButton(
-                      onPressed: _navigateToLogin,
-                      child: Text(
-                        "Giriş Yap",
-                        style: TextStyle(color: Colors.red[900]),
+                        padding: EdgeInsets.symmetric(vertical: 16, horizontal: 32),
+                        textStyle: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ],

@@ -1,8 +1,11 @@
+import 'package:deneme20/RezervasyonSayfasi.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'kagithaneSayfasi.dart';
 import 'avcilarSayfasi.dart';
-import 'GirisYapSayfasi.dart'; // Giriş yap sayfanızı import edin
+import 'GirisYapSayfasi.dart';
+import 'RezervasyonSayfasi.dart'; // Rezervasyon sayfasını import et
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,6 +45,36 @@ class BodyContent extends StatefulWidget {
 
 class _BodyContentState extends State<BodyContent> {
   bool _showOptions = false;
+  User? _user;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkUser();
+  }
+
+  Future<void> _checkUser() async {
+    User? currentUser = FirebaseAuth.instance.currentUser;
+    setState(() {
+      _user = currentUser;
+    });
+  }
+
+  Future<void> _signOut() async {
+    try {
+      await FirebaseAuth.instance.signOut();
+      setState(() {
+        _user = null;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Oturum kapatıldı!')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Oturum kapatma başarısız: ${e.toString()}')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,8 +82,32 @@ class _BodyContentState extends State<BodyContent> {
       children: [
         Positioned.fill(
           child: Image.network(
-            'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fphonewallpaperhd.com%2Fwp-content%2Fuploads%2F2020%2F09%2FFood-Wallpaper-for-Phones.jpg&f=1&nofb=1&ipt=0acab9ec1efcf19a0d30c5f83338af0afdb2400cfeae82c1137c510b7914a9aa&ipo=images',
+            'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2F3diphonewallpaper.com%2Fwp-content%2Fuploads%2F2020%2F09%2FFood-iPhone-Wallpaper.jpg&f=1&nofb=1&ipt=e9e454f2f31b65194b7abb5bc5e2cf0abd51b768bfcd5bb37cabcc9a1521c14e&ipo=images',
             fit: BoxFit.cover,
+          ),
+        ),
+        Positioned(
+          top: 16,
+          right: 16,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (_user != null) // Kullanıcı giriş yapmışsa
+                IconButton(
+                  icon: Icon(Icons.logout, size: 30, color: Colors.red[900]),
+                  onPressed: _signOut,
+                ),
+              if (_user != null) // Kullanıcı giriş yapmışsa
+                IconButton(
+                  icon: Icon(Icons.restaurant_menu, size: 30, color: Colors.red[900]), // Rezervasyon ikonu
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => RezervasyonSayfasi()), // Rezervasyon sayfasına yönlendirme
+                    );
+                  },
+                ),
+            ],
           ),
         ),
         Center(
@@ -60,15 +117,26 @@ class _BodyContentState extends State<BodyContent> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                IconButton(
-                  icon: Icon(Icons.login, size: 40, color: Colors.red[900]),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => GirisYapSayfasi()),
-                    );
-                  },
-                ),
+                if (_user != null) // Eğer kullanıcı giriş yapmışsa
+                  Text(
+                    "Hoş Geldiniz, ${_user!.displayName ?? 'Kullanıcı'}",
+                    style: TextStyle(
+                      fontFamily: 'Arial',
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black54,
+                    ),
+                  ),
+                if (_user == null) // Eğer kullanıcı giriş yapmamışsa
+                  IconButton(
+                    icon: Icon(Icons.login, size: 40, color: Colors.red[900]),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => GirisYapSayfasi()),
+                      );
+                    },
+                  ),
                 SizedBox(height: 20), // İkon ve metin arasında boşluk
                 Text(
                   "Lütfen ilçeyi seçiniz",
