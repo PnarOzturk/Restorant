@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'TatliDuslerMenuPage.dart'; // TatliDuslerMenuPage'i import edin
+import 'TazeDenizMenuPage.dart'; // Menü sayfası için import
 
-class TatliDusler extends StatelessWidget {
+class TazeDeniz extends StatelessWidget {
   final String title;
   final String description;
   final double rating;
 
-  TatliDusler({
+  TazeDeniz({
     required this.title,
     required this.description,
     required this.rating,
@@ -17,7 +17,7 @@ class TatliDusler extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.pink[100],
+        backgroundColor: Colors.teal[800],
         title: Text(
           title,
           style: TextStyle(
@@ -32,7 +32,7 @@ class TatliDusler extends StatelessWidget {
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: NetworkImage('https://iphonexpapers.com/wp-content/uploads/papers.co-nb57-food-stylist-dessert-berry-cake-bokeh-flare-41-iphone-wallpaper-240x519.jpg'),
+            image: NetworkImage('https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fc1.wallpaperflare.com%2Fpreview%2F558%2F891%2F711%2Fseafood-food-healthy-sea.jpg&f=1&nofb=1&ipt=663391d4f478fda256e659293dedc641ed3c2df458436727bd34d8df64e2bdeb&ipo=images'),
             fit: BoxFit.cover,
           ),
         ),
@@ -41,13 +41,13 @@ class TatliDusler extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Restaurant bilgileri
+              // Restoran detayları
               Text(
                 title,
                 style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
-                  color: Colors.brown[50],
+                  color: Colors.white,
                 ),
               ),
               SizedBox(height: 8),
@@ -82,13 +82,11 @@ class TatliDusler extends StatelessWidget {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
-                            builder: (context) => TatliDuslerMenuPage(), // Menü sayfasına yönlendirin
-                          ),
+                          MaterialPageRoute(builder: (context) => TazeDenizMenuPage()), // Menü sayfasına git
                         );
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.pink[100],
+                        backgroundColor: Colors.teal[800],
                         padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
                       ),
                       child: Text(
@@ -99,10 +97,10 @@ class TatliDusler extends StatelessWidget {
                     SizedBox(height: 16),
                     ElevatedButton(
                       onPressed: () {
-                        // Masa düzeni sayfasına gitmek için
+                        // Masa düzeni sayfasına gitme işlemi
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.pink[100],
+                        backgroundColor: Colors.teal[800],
                         padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
                       ),
                       child: Text(

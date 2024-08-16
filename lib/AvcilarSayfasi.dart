@@ -33,7 +33,7 @@ class _AvcilarSayfasiState extends State<AvcilarSayfasi> {
   void initState() {
     super.initState();
     _requestLocationPermission();
-    _initializeMarkers(); // Marker'ları initialize edin
+    _initializeMarkers();
   }
 
   Future<void> _requestLocationPermission() async {
@@ -46,14 +46,95 @@ class _AvcilarSayfasiState extends State<AvcilarSayfasi> {
   }
 
   void _initializeMarkers() {
-    // Marker'ları tanımlayın
+    // Türk mutfağı restoranları
     _restaurantTypes['Türk']?.addAll([
-      _createMarker('Sehnaz', LatLng(40.9893, 28.7224), 'Sehnaz Restorant', 'Her tabakta yeni bir keşif', 4, '2010 yılından beri sizlere hizmet eden Sehnaz Restorant, modern tasarımı ve geniş menüsü ile benzersiz bir yemek deneyimi sunar. Her öğünde damak tadınıza hitap eden sürprizlerimizle sizleri ağırlamaktan mutluluk duyuyoruz.'),
-      _createMarker('Sirius', LatLng(40.9793, 28.7134), 'Sirius Restorant', 'Lezzet ve eğlencenin buluşma noktası', 3.5, '2008 yılından bu yana, Sirius Restorant, dinamik ve enerjik atmosferi ile yemeklerinize renk katıyor. Lezzetli yemeklerimiz ve keyifli ortamımızda unutulmaz anlar yaşamanız için buradayız.'),
-      _createMarker('Ercel', LatLng(40.9793, 28.7014), 'Erçel Restorant', 'Geleneksel tatların modern sunumu', 2, '1998 yılından beri hizmet veren Erçel Restorant, köklü mutfak kültürümüzü modern dokunuşlarla sunar. Rahat ortamımız ve zengin menümüzle, sizlere hem lezzet hem de kalite sunmayı hedefliyoruz.'),
+      _createMarker(
+        'Sehnaz',
+        LatLng(40.9893, 28.7224),
+        'Şehnaz Restorant',
+        'Her tabakta yeni bir keşif',
+        4.5,
+        '2010 yılından beri sizlere hizmet eden Şehnaz Restorant, modern tasarımı ve geniş menüsü ile benzersiz bir yemek deneyimi sunar.',
+      ),
+      _createMarker(
+        'Sirius',
+        LatLng(40.9793, 28.7134),
+        'Sirius Restorant',
+        'Lezzet ve eğlencenin buluşma noktası',
+        4.0,
+        '2008 yılından bu yana, Sirius Restorant, dinamik ve enerjik atmosferi ile yemeklerinize renk katıyor.',
+      ),
+      _createMarker(
+        'Ercel',
+        LatLng(40.9793, 28.7014),
+        'Erçel Restorant',
+        'Geleneksel tatların modern sunumu',
+        3.5,
+        '1998 yılından beri hizmet veren Erçel Restorant, köklü mutfak kültürümüzü modern dokunuşlarla sunar.',
+      ),
     ]);
 
-    _loadMarkers(); // İlk başta tüm marker'ları göster
+    // Kafe
+    _restaurantTypes['Kafe']?.addAll([
+      _createMarker(
+        'KahveSokağı',
+        LatLng(40.9832, 28.7256),
+        'Kahve Sokağı',
+        'Kahve keyfi ve dost sohbetleri',
+        4.8,
+        'Şehirden uzak, rahat bir ortamda kahve ve tatlı keyfi sunar.',
+      ),
+      _createMarker(
+        'KahveMolası',
+        LatLng(40.9756, 28.7154),
+        'Kahve Molası',
+        'Her yudumda huzur',
+        4.2,
+        'Sıcak ve samimi atmosferi ile tanınan Kahve Molası, misafirlerine unutulmaz anlar yaşatır.',
+      ),
+    ]);
+
+    // Global mutfak
+    _restaurantTypes['Global']?.addAll([
+      _createMarker(
+        'WorldFlavors',
+        LatLng(40.9781, 28.7272),
+        'World Flavors',
+        'Dünyanın lezzetleri burada buluşuyor',
+        4.7,
+        'Farklı kültürlerden esinlenerek hazırlanan yemekleri sunar.',
+      ),
+      _createMarker(
+        'FusionBistro',
+        LatLng(40.9743, 28.7089),
+        'Fusion Bistro',
+        'Lezzetlerin buluşma noktası',
+        4.3,
+        'Modern ve geleneksel lezzetlerin harmanlandığı eşsiz bir mutfak.',
+      ),
+    ]);
+
+    // Tatlıcılar
+    _restaurantTypes['Tatlı']?.addAll([
+      _createMarker(
+        'TatlıRüyalar',
+        LatLng(40.9801, 28.7122),
+        'Tatlı Rüyalar',
+        'Her tatlı bir rüya',
+        4.9,
+        'Tatlı tutkunları için cennet. Birbirinden lezzetli tatlılar sunar.',
+      ),
+      _createMarker(
+        'Şekerci',
+        LatLng(40.9765, 28.7198),
+        'Şekerci',
+        'Tatlı keyfi ve mutluluk',
+        4.6,
+        'Taze ve kaliteli malzemelerle hazırlanmış tatlılar sunar.',
+      ),
+    ]);
+
+    _loadMarkers();
   }
 
   void _loadMarkers() {
@@ -95,7 +176,7 @@ class _AvcilarSayfasiState extends State<AvcilarSayfasi> {
       appBar: AppBar(
         backgroundColor: Colors.red[900],
         title: Text(
-          'Avcılar Restorantlar',
+          'Avcılar Restoranlar',
           style: TextStyle(
             color: Colors.grey[200],
             fontFamily: 'Arial',
