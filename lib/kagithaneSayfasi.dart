@@ -7,6 +7,8 @@ import 'package:deneme20/DemirRestorant.dart';
 import 'package:deneme20/ZeytinAdi.dart';
 import 'package:deneme20/TatliDusler.dart';
 import 'package:deneme20/KahveBahane.dart';
+import 'package:deneme20/DonerciUstam.dart';
+import 'package:deneme20/TazeDeniz.dart';
 
 class KagithaneSayfasi extends StatefulWidget {
   @override
@@ -125,9 +127,16 @@ class _KagithaneSayfasiState extends State<KagithaneSayfasi> {
       case 'Zeytin_adi':
         page = Zeytinadi(title: restaurant, description: description, rating: rating);
         break;
+      case 'Taze_Deniz':
+        page = TazeDeniz(title: restaurant, description: description, rating: rating);
+        break;
       case 'Tatlı_Düşler':
         page = TatliDusler(title: restaurant, description: description, rating: rating);
         break;
+      case 'Dönerci_Ustam':
+        page = DonerciUstam(title: restaurant, description: description, rating: rating);
+    break;
+
       default:
         page = Container(); // Default empty container to handle unknown cases
     }
