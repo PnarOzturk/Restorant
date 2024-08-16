@@ -11,6 +11,7 @@ class GirisYapSayfasi extends StatefulWidget {
 class _GirisYapSayfasiState extends State<GirisYapSayfasi> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _resetEmailController = TextEditingController(); // Şifre sıfırlama e-postası için
 
   void _navigateToCreateAccount() {
     Navigator.push(
@@ -38,6 +39,31 @@ class _GirisYapSayfasiState extends State<GirisYapSayfasi> {
       );
     } catch (e) {
       String errorMessage = 'Giriş başarısız';
+
+      // Hata tipini kontrol et ve uygun mesajı al
+      if (e is FirebaseAuthException) {
+        errorMessage = e.message ?? errorMessage;
+      } else {
+        // FirebaseAuthException değilse, genel bir hata mesajı kullan
+        errorMessage = e.toString();
+      }
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(errorMessage)),
+      );
+    }
+  }
+
+  Future<void> _sendPasswordResetEmail() async {
+    String email = _resetEmailController.text;
+
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Şifre sıfırlama e-postası gönderildi!')),
+      );
+    } catch (e) {
+      String errorMessage = 'E-posta gönderme başarısız';
 
       // Hata tipini kontrol et ve uygun mesajı al
       if (e is FirebaseAuthException) {
@@ -142,6 +168,42 @@ class _GirisYapSayfasiState extends State<GirisYapSayfasi> {
                       onPressed: _navigateToCreateAccount,
                       child: Text(
                         "Hesap Oluştur",
+                        style: TextStyle(color: Colors.red[900]),
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    TextButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: Text('Şifre Sıfırlama'),
+                            content: TextField(
+                              controller: _resetEmailController,
+                              decoration: InputDecoration(
+                                labelText: "E-posta adresinizi girin",
+                              ),
+                            ),
+                            actions: <Widget>[
+                              TextButton(
+                                child: Text('Gönder'),
+                                onPressed: () {
+                                  _sendPasswordResetEmail();
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                              TextButton(
+                                child: Text('İptal'),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                      child: Text(
+                        "Şifremi Unuttum",
                         style: TextStyle(color: Colors.red[900]),
                       ),
                     ),
