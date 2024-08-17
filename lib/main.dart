@@ -89,25 +89,52 @@ class _BodyContentState extends State<BodyContent> {
         Positioned(
           top: 16,
           right: 16,
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (_user != null) // Kullanıcı giriş yapmışsa
-                IconButton(
-                  icon: Icon(Icons.logout, size: 30, color: Colors.red[900]),
-                  onPressed: _signOut,
-                ),
-              if (_user != null) // Kullanıcı giriş yapmışsa
-                IconButton(
-                  icon: Icon(Icons.restaurant_menu, size: 30, color: Colors.red[900]), // Rezervasyon ikonu
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => RezervasyonSayfasi()), // Rezervasyon sayfasına yönlendirme
-                    );
-                  },
-                ),
-            ],
+          child: Container(
+            padding: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Colors.red[50]?.withOpacity(0.8),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (_user == null)
+                  IconButton(
+                    icon: Icon(Icons.login, size: 30, color: Colors.red[900]),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => GirisYapSayfasi()),
+                      );
+                    },
+                  ),
+                if (_user == null)
+                  Text(
+                    "Giriş Yap",
+                    style: TextStyle(
+                      fontFamily: 'Arial',
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.red[900],
+                    ),
+                  ),
+                if (_user != null) // Kullanıcı giriş yapmışsa
+                  IconButton(
+                    icon: Icon(Icons.logout, size: 30, color: Colors.red[900]),
+                    onPressed: _signOut,
+                  ),
+                if (_user != null) // Kullanıcı giriş yapmışsa
+                  IconButton(
+                    icon: Icon(Icons.restaurant_menu, size: 30, color: Colors.red[900]), // Rezervasyon ikonu
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => RezervasyonSayfasi()), // Rezervasyon sayfasına yönlendirme
+                      );
+                    },
+                  ),
+              ],
+            ),
           ),
         ),
         Center(
@@ -127,16 +154,6 @@ class _BodyContentState extends State<BodyContent> {
                       color: Colors.black54,
                     ),
                   ),
-                if (_user == null) // Eğer kullanıcı giriş yapmamışsa
-                  IconButton(
-                    icon: Icon(Icons.login, size: 40, color: Colors.red[900]),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => GirisYapSayfasi()),
-                      );
-                    },
-                  ),
                 SizedBox(height: 20), // İkon ve metin arasında boşluk
                 Text(
                   "Lütfen ilçeyi seçiniz",
@@ -149,9 +166,15 @@ class _BodyContentState extends State<BodyContent> {
                 SizedBox(height: 10), // Metin ve dropdown menü arasında boşluk
                 InkWell(
                   onTap: () {
-                    setState(() {
-                      _showOptions = !_showOptions;
-                    });
+                    if (_user != null) {
+                      setState(() {
+                        _showOptions = !_showOptions;
+                      });
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Lütfen giriş yapınız')),
+                      );
+                    }
                   },
                   child: Container(
                     padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
