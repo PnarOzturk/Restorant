@@ -82,7 +82,7 @@ class _BodyContentState extends State<BodyContent> {
       children: [
         Positioned.fill(
           child: Image.network(
-            'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2F3diphonewallpaper.com%2Fwp-content%2Fuploads%2F2020%2F09%2FFood-iPhone-Wallpaper.jpg&f=1&nofb=1&ipt=e9e454f2f31b65194b7abb5bc5e2cf0abd51b768bfcd5bb37cabcc9a1521c14e&ipo=images',
+            'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwallpaperaccess.com%2Ffull%2F5502189.jpg&f=1&nofb=1&ipt=160a6b9ea3f234a742817a483f1ff45e6ffb4657998d83ad3173e563e6fca1a1&ipo=images',
             fit: BoxFit.cover,
           ),
         ),

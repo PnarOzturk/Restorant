@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'masa_duzeni_sayfasi.dart'; // Yeni sayfayı import et
+import 'masa_duzeni_sayfasi.dart'; // Masa düzeni sayfasını import et
 import 'YorThusRestorantMenuPage.dart'; // Menü sayfasını import et
 
 class Yorthusrestorant extends StatelessWidget {
   final String title;
   final String description;
   final double rating;
+  final String restaurantId; // Restoran kimliğini ekle
 
   Yorthusrestorant({
     required this.title,
-    required this.description,
-    this.rating = 4.8,
+ required String restorantId,
+  required this.description,
+    required this.rating,
+    required this.restaurantId,
+  // Kimliği zorunlu hale getir
   });
 
   @override
@@ -60,7 +64,9 @@ class Yorthusrestorant extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => YorThusRestorantMenuPage(),
+                            builder: (context) => YorThusRestorantMenuPage(
+                              restaurantId: restaurantId,
+                            ), // Kimliği aktar
                           ),
                         );
                       },
@@ -77,7 +83,9 @@ class Yorthusrestorant extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => MasaDuzeniSayfasi(),
+                            builder: (context) => MasaDuzeniSayfasi(
+                              restaurantId: restaurantId,
+                            ), // Kimliği aktar
                           ),
                         );
                       },
@@ -103,6 +111,7 @@ class Yorthusrestorant extends StatelessWidget {
                     value: null,
                     onChanged: (String? newValue) {
                       // Tıklama işlemi
+                      print('Seçilen: $newValue');
                     },
                     items: [
                       DropdownMenuItem<String>(

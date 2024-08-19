@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'TatliDuslerMenuPage.dart'; // TatliDuslerMenuPage'i import edin
+import 'TatliDuslerMenuPage.dart'; // Menü sayfasını import edin
+import 'masa_duzeni_sayfasi.dart'; // Masa düzeni sayfasını import edin
 
 class TatliDusler extends StatelessWidget {
   final String title;
   final String description;
   final double rating;
+  final String restaurantId; // Restoran kimliğini ekleyin
 
   TatliDusler({
     required this.title,
     required this.description,
     required this.rating,
+    required this.restaurantId, // Kimliği zorunlu hale getirin
   });
 
   @override
@@ -41,7 +44,7 @@ class TatliDusler extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Restaurant bilgileri
+              // Restoran bilgileri
               Text(
                 title,
                 style: TextStyle(
@@ -99,7 +102,12 @@ class TatliDusler extends StatelessWidget {
                     SizedBox(height: 16),
                     ElevatedButton(
                       onPressed: () {
-                        // Masa düzeni sayfasına gitmek için
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MasaDuzeniSayfasi(restaurantId: restaurantId), // Kimliği aktararak Masa Düzeni sayfasına yönlendirin
+                          ),
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.pink[100],

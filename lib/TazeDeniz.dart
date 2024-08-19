@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'TazeDenizMenuPage.dart'; // Menü sayfası için import
+import 'masa_duzeni_sayfasi.dart'; // Masa düzeni sayfasını import edin
 
 class TazeDeniz extends StatelessWidget {
   final String title;
   final String description;
   final double rating;
+  final String restaurantId; // Restoran kimliğini ekleyin
 
   TazeDeniz({
     required this.title,
     required this.description,
     required this.rating,
+    required this.restaurantId, // Kimliği zorunlu hale getirin
   });
 
   @override
@@ -82,7 +85,9 @@ class TazeDeniz extends StatelessWidget {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => TazeDenizMenuPage()), // Menü sayfasına git
+                          MaterialPageRoute(
+                            builder: (context) => TazeDenizMenuPage(), // Menü sayfasına git
+                          ),
                         );
                       },
                       style: ElevatedButton.styleFrom(
@@ -97,7 +102,12 @@ class TazeDeniz extends StatelessWidget {
                     SizedBox(height: 16),
                     ElevatedButton(
                       onPressed: () {
-                        // Masa düzeni sayfasına gitme işlemi
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MasaDuzeniSayfasi(restaurantId: restaurantId), // Masa Düzeni sayfasına git
+                          ),
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.teal[800],

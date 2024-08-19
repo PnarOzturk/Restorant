@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
 class MasaDuzeniSayfasi extends StatefulWidget {
+  final String restaurantId; // restaurantId parametresini ekle
+
+  MasaDuzeniSayfasi({required this.restaurantId}); // Constructor'a ekle
+
   @override
   _MasaDuzeniSayfasiState createState() => _MasaDuzeniSayfasiState();
 }
@@ -18,7 +22,7 @@ class _MasaDuzeniSayfasiState extends State<MasaDuzeniSayfasi> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Masa Düzeni'),
+        title: Text('Masa Düzeni - ${widget.restaurantId}'), // Restoran kimliğini başlığa ekle
         backgroundColor: Colors.red[900],
       ),
       body: Container(
