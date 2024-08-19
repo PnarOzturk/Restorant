@@ -17,6 +17,8 @@ dependencies:
   flutter_rating_bar: ^4.0.1  # Uyumlu sürüm
   firebase_auth: ^4.20.0
   firebase_core: ^2.0.0
+  cloud_firestore: ^4.17.5  # Daha uyumlu bir sürüm
+
 
 dev_dependencies:
   flutter_test:
