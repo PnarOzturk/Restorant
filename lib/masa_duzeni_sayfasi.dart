@@ -1,9 +1,12 @@
+import 'package:deneme20/main.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:deneme20/services/table_service.dart';
 
 class MasaDuzeniSayfasi extends StatefulWidget {
-  final String restaurantId; // restaurantId parametresini ekle
+  final String restaurantId;
 
-  MasaDuzeniSayfasi({required this.restaurantId}); // Constructor'a ekle
+  MasaDuzeniSayfasi({required this.restaurantId});
 
   @override
   _MasaDuzeniSayfasiState createState() => _MasaDuzeniSayfasiState();
@@ -17,12 +20,75 @@ class _MasaDuzeniSayfasiState extends State<MasaDuzeniSayfasi> {
 
   int? selectedIndex;
   int? selectedCapacity;
+  bool isCapacitySelected = false;
+  final TableService _tableService = TableService();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadTableStatuses();
+  }
+
+  Future<void> _loadTableStatuses() async {
+    for (int i = 0; i < masaResimleri.length; i++) {
+      try {
+        final tableDoc = await FirebaseFirestore.instance
+            .collection('restaurants')
+            .doc(widget.restaurantId)
+            .collection('tables')
+            .doc('table$i')
+            .get();
+
+        if (tableDoc.exists && tableDoc['status'] == 'occupied') {
+          masaResimleri[i] = 'assets/dolu_masa.png';
+        } else {
+          masaResimleri[i] = 'assets/bos_masa.png';
+        }
+      } catch (e) {
+        print('Error loading table status: $e');
+      }
+    }
+    setState(() {});
+  }
+
+  Future<void> _reserveTable() async {
+    if (!isCapacitySelected) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Lütfen masa tipi seçiniz')),
+      );
+      return;
+    }
+
+    if (selectedIndex == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Lütfen bir masa seçiniz')),
+      );
+      return;
+    }
+
+    try {
+      await _tableService.updateTableStatus(widget.restaurantId, 'table$selectedIndex', 'occupied');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Masa rezerve edildi')),
+      );
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => MyApp(),
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Rezervasyon sırasında bir hata oluştu')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Masa Düzeni - ${widget.restaurantId}'), // Restoran kimliğini başlığa ekle
+        title: Text('Masa Düzeni - ${widget.restaurantId}'),
         backgroundColor: Colors.red[900],
       ),
       body: Container(
@@ -62,6 +128,7 @@ class _MasaDuzeniSayfasiState extends State<MasaDuzeniSayfasi> {
                       onChanged: (value) {
                         setState(() {
                           selectedCapacity = value;
+                          isCapacitySelected = true; // Seçim yapıldı
                         });
                       },
                       dropdownColor: Colors.red[50]?.withOpacity(0.8),
@@ -75,39 +142,53 @@ class _MasaDuzeniSayfasiState extends State<MasaDuzeniSayfasi> {
               Expanded(
                 child: GridView.builder(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 4, // 4 sütun
+                    crossAxisCount: 4,
                     crossAxisSpacing: 16.0,
                     mainAxisSpacing: 16.0,
                   ),
-                  itemCount: masaResimleri.length, // Masa resimlerinin sayısı
+                  itemCount: masaResimleri.length,
                   itemBuilder: (context, index) {
-                    final isSelectedCapacity = ((index ~/ 4) + 1) == selectedCapacity || selectedCapacity == null;
+                    final isSelectedCapacity = ((index ~/ 4) + 1) == selectedCapacity;
+                    final isOccupied = masaResimleri[index] == 'assets/dolu_masa.png';
+                    final isSelectable = isCapacitySelected && isSelectedCapacity;
 
                     return Visibility(
-                      visible: isSelectedCapacity,
+                      visible: isCapacitySelected ? isSelectedCapacity : true, // Masa türü seçildiyse uygun olanlar gösterilir, seçilmediyse hepsi görünür
                       child: GestureDetector(
-                        onTap: () {
+                        onTap: isOccupied || !isSelectable ? null : () async {
                           setState(() {
-                            // Reset previously selected table
                             if (selectedIndex != null) {
                               masaResimleri[selectedIndex!] = 'assets/bos_masa.png';
                             }
-                            // Set the new selected table
                             selectedIndex = index;
                             masaResimleri[index] = 'assets/secili_masa.png';
                           });
+
+                          final tableDoc = await FirebaseFirestore.instance
+                              .collection('restaurants')
+                              .doc(widget.restaurantId)
+                              .collection('tables')
+                              .doc('table$index') // Belge ID'sini 'tableX' olarak güncelledik
+                              .get();
+
+                          if (tableDoc.exists && tableDoc['status'] == 'occupied') {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Bu masa dolu')),
+                            );
+                          } else {
+                            setState(() {
+                              masaResimleri[index] = 'assets/secili_masa.png'; // Görseli güncelle
+                            });
+                          }
                         },
                         child: Container(
                           decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            color: Colors.white,
                             image: DecorationImage(
                               image: AssetImage(masaResimleri[index]),
                               fit: BoxFit.cover,
                             ),
-                            border: Border.all(
-                              color: selectedIndex == index ? Colors.blue : Colors.transparent,
-                              width: 3.0,
-                            ),
-                            borderRadius: BorderRadius.circular(8.0), // Köşeleri yuvarlama
                           ),
                         ),
                       ),
@@ -115,52 +196,15 @@ class _MasaDuzeniSayfasiState extends State<MasaDuzeniSayfasi> {
                   },
                 ),
               ),
-              SizedBox(height: 20),
-              Align(
-                alignment: Alignment.bottomCenter,
+              SizedBox(height: 16),
+              Center(
                 child: ElevatedButton(
-                  onPressed: () {
-                    if (selectedIndex == null || selectedCapacity == null) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Lütfen masa seçiniz')),
-                      );
-                    } else {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => RezervasyonSayfasi(),
-                        ),
-                      );
-                    }
-                  },
-                  child: Text('Rezervasyon Yap', style: TextStyle(color: Colors.white)),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red[900], // Buton rengi
-                    padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
-                    textStyle: TextStyle(fontSize: 20),
-                  ),
+                  onPressed: _reserveTable,
+                  child: Text('Devam Et'),
                 ),
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class RezervasyonSayfasi extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Rezervasyon Yap'),
-        backgroundColor: Colors.red[900],
-      ),
-      body: Center(
-        child: Text(
-          'Rezervasyon Yapıldı!',
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
       ),
     );

@@ -1,15 +1,18 @@
-import 'package:deneme20/RezervasyonSayfasi.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'kagithaneSayfasi.dart';
 import 'avcilarSayfasi.dart';
 import 'GirisYapSayfasi.dart';
-import 'RezervasyonSayfasi.dart'; // Rezervasyon sayfasını import et
+import 'RezervasyonSayfasi.dart';
+import 'package:deneme20/data_initializer.dart'; // Dosya yolu
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  // Veri tabanını başlatmak için
+  DataInitializer dataInitializer = DataInitializer();
+  await dataInitializer.initializeData();
   runApp(MyApp());
 }
 
