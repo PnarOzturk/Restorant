@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'ZeytinAdiMenuPage.dart'; // Menü sayfasını import edin
+import 'masa_duzeni_sayfasi.dart'; // Masa düzeni sayfasını import edin
 
 class Zeytinadi extends StatelessWidget {
   final String title;
   final String description;
   final double rating;
+  final String restaurantId; // Restoran kimliğini ekle
 
   Zeytinadi({
     required this.title,
     required this.description,
     this.rating = 4.0,
+    required this.restaurantId, // Kimliği zorunlu hale getir
   });
 
   @override
@@ -81,7 +84,12 @@ class Zeytinadi extends StatelessWidget {
                     SizedBox(height: 16),
                     ElevatedButton(
                       onPressed: () {
-                        // Masa Düzeni butonuna tıklama işlemi
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MasaDuzeniSayfasi(restaurantId: restaurantId), // Kimliği aktar
+                          ),
+                        );
                       },
                       child: Text('Masa Düzeni', style: TextStyle(color: Colors.white)),
                       style: ElevatedButton.styleFrom(

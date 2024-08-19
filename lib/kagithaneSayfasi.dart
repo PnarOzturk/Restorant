@@ -54,28 +54,108 @@ class _KagithaneSayfasiState extends State<KagithaneSayfasi> {
 
   void _initializeMarkers() {
     _restaurantTypes['Akdeniz Mutfağı']?.add(
-      _createMarker('Zeytin_adi', LatLng(41.0897, 29.0092), 'Zeytin Adı', 'Akdeniz’in Tadını Getiriyoruz', 4.3, 'Akdeniz mutfağından taze lezzetler sunan bu mekan, mükemmel bir yemek deneyimi sunar.'),
+      _createMarker(
+        id: 'Zeytin_adi',
+        position: LatLng(41.0897, 29.0092),
+        title: 'Zeytin Adı',
+        snippet: 'Akdeniz’in Tadını Getiriyoruz',
+        rating: 4.3,
+        description:
+        'Akdeniz mutfağından taze lezzetler sunan bu mekan, mükemmel bir yemek deneyimi sunar.',
+      ),
     );
 
     _restaurantTypes['Türk Mutfağı']?.addAll([
-      _createMarker('Dönerci_Ustam', LatLng(41.0826, 29.0231), 'Dönerci Ustam', 'Hızlı ve lezzetli', 3.7, 'Klasik Türk dönerinin en lezzetli halini sunan mekan, hızlı servis anlayışıyla bilinir.'),
-      _createMarker('Teker', LatLng(41.0912, 29.0163), 'Teker Restorant', 'Zarif bir ortamda unutulmaz lezzetler', 3.8, 'Ferah ve rahat ortamıyla yemeklerinizin keyfini çıkarabileceğiniz bir mekan.'),
-      _createMarker('Demir', LatLng(41.1012, 29.0063), 'Demir Restorant', 'Şehirden kaçış, lezzetten keyif', 4.0, 'Doğal ve huzurlu atmosferiyle şehir hayatının karmaşasından uzaklaşmanızı sağlar.'),
+      _createMarker(
+        id: 'Dönerci_Ustam',
+        position: LatLng(41.0826, 29.0231),
+        title: 'Dönerci Ustam',
+        snippet: 'Hızlı ve lezzetli',
+        rating: 3.7,
+        description:
+        'Klasik Türk dönerinin en lezzetli halini sunan mekan, hızlı servis anlayışıyla bilinir.',
+      ),
+      _createMarker(
+        id: 'Teker',
+        position: LatLng(41.0912, 29.0163),
+        title: 'Teker Restorant',
+        snippet: 'Zarif bir ortamda unutulmaz lezzetler',
+        rating: 3.8,
+        description:
+        'Ferah ve rahat ortamıyla yemeklerinizin keyfini çıkarabileceğiniz bir mekan.',
+      ),
+      _createMarker(
+        id: 'Demir',
+        position: LatLng(41.1012, 29.0063),
+        title: 'Demir Restorant',
+        snippet: 'Şehirden kaçış, lezzetten keyif',
+        rating: 4.0,
+        description:
+        'Doğal ve huzurlu atmosferiyle şehir hayatının karmaşasından uzaklaşmanızı sağlar.',
+      ),
     ]);
 
     _restaurantTypes['Kafe']?.addAll([
-      _createMarker('Kahve_Bahane', LatLng(41.0832, 29.0185), 'Kahve Bahane', 'Keyifli Sohbetlerin Mekanı', 4.6, 'Zengin kahve çeşitleri ve taze tatlılarla dolu menümüzle dostlarınızla keyifli vakit geçirmenizi sağlar.'),
-      _createMarker('Kahve_Durağı', LatLng(41.0891, 29.0128), 'Kahve Durağı', 'Her yudumda bir mola', 2.2, 'Şehirden uzak, rahat atmosferiyle lezzetli kahve çeşitleri sunar.'),
+      _createMarker(
+        id: 'Kahve_Bahane',
+        position: LatLng(41.0832, 29.0185),
+        title: 'Kahve Bahane',
+        snippet: 'Keyifli Sohbetlerin Mekanı',
+        rating: 4.6,
+        description:
+        'Zengin kahve çeşitleri ve taze tatlılarla dolu menümüzle dostlarınızla keyifli vakit geçirmenizi sağlar.',
+      ),
+      _createMarker(
+        id: 'Kahve_Durağı',
+        position: LatLng(41.0891, 29.0128),
+        title: 'Kahve Durağı',
+        snippet: 'Her yudumda bir mola',
+        rating: 2.2,
+        description:
+        'Şehirden uzak, rahat atmosferiyle lezzetli kahve çeşitleri sunar.',
+      ),
     ]);
 
     _restaurantTypes['Dünya Mutfağı']?.addAll([
-      _createMarker('Karma_adi', LatLng(41.1407, 29.0584), 'Karma Sofrası', 'Dünya Mutfağından Seçmeler', 4.5, 'Farklı kültürlerden esinlenerek hazırlanan yemekleri sunar.'),
-      _createMarker('YorThus', LatLng(41.0812, 29.0063), 'YorThus Restorant', 'Harika yemekler ve mükemmel bir atmosfer', 4.5, 'Sakin ve huzurlu atmosferi ile tanınır. Lezzetli yemeklerimiz ve özenle hazırlanmış menümüzle kaliteli hizmet sunar.'),
-      _createMarker('Taze_Deniz', LatLng(41.0862, 29.0215), 'Taze Deniz', 'Denizin taptaze lezzetleri', 4.1, 'Deniz ürünlerinin en taze ve lezzetli halini sunar.'),
+      _createMarker(
+        id: 'Karma_adi',
+        position: LatLng(41.1407, 29.0584),
+        title: 'Karma Sofrası',
+        snippet: 'Dünya Mutfağından Seçmeler',
+        rating: 4.5,
+        description:
+        'Farklı kültürlerden esinlenerek hazırlanan yemekleri sunar.',
+      ),
+      _createMarker(
+        id: 'YorThus',
+        position: LatLng(41.0812, 29.0063),
+        title: 'YorThus Restorant',
+        snippet: 'Harika yemekler ve mükemmel bir atmosfer',
+        rating: 4.5,
+        description:
+        'Sakin ve huzurlu atmosferi ile tanınır. Lezzetli yemeklerimiz ve özenle hazırlanmış menümüzle kaliteli hizmet sunar.',
+      ),
+      _createMarker(
+        id: 'Taze_Deniz',
+        position: LatLng(41.0862, 29.0215),
+        title: 'Taze Deniz',
+        snippet: 'Denizin taptaze lezzetleri',
+        rating: 4.1,
+        description:
+        'Deniz ürünlerinin en taze ve lezzetli halini sunar.',
+      ),
     ]);
 
     _restaurantTypes['Tatlı']?.add(
-      _createMarker('Tatlı_Düşler', LatLng(41.0857, 29.0145), 'Tatlı Düşler', 'Her tatlı bir düş', 4.2, 'Birbirinden lezzetli ve taze tatlılarıyla bilinir.'),
+      _createMarker(
+        id: 'Tatlı_Düşler',
+        position: LatLng(41.0857, 29.0145),
+        title: 'Tatlı Düşler',
+        snippet: 'Her tatlı bir düş',
+        rating: 4.2,
+        description:
+        'Birbirinden lezzetli ve taze tatlılarıyla bilinir.',
+      ),
     );
 
     _loadMarkers();
@@ -94,7 +174,14 @@ class _KagithaneSayfasiState extends State<KagithaneSayfasi> {
     });
   }
 
-  Marker _createMarker(String id, LatLng position, String title, String snippet, double rating, String description) {
+  Marker _createMarker({
+    required String id,
+    required LatLng position,
+    required String title,
+    required String snippet,
+    required double rating,
+    required String description,
+  }) {
     return Marker(
       markerId: MarkerId(id),
       position: position,
@@ -115,30 +202,27 @@ class _KagithaneSayfasiState extends State<KagithaneSayfasi> {
 
     Widget page;
     switch (id) {
-      case 'YorThus':
-        page = Yorthusrestorant(title: restaurant, description: description, rating: rating);
-        break;
+
       case 'Demir':
-        page = DemirRestorant(title: restaurant, description: description, rating: rating);
+        page = DemirRestorant(title: restaurant, description: description, rating: rating, restaurantId: id);
         break;
       case 'Kahve_Bahane':
-        page = KahveBahane(title: restaurant, description: description, rating: rating);
+        page = KahveBahane(title: restaurant, description: description, rating: rating, restaurantId: id);
         break;
       case 'Zeytin_adi':
-        page = Zeytinadi(title: restaurant, description: description, rating: rating);
+        page = Zeytinadi(title: restaurant, description: description, rating: rating, restaurantId: id);
         break;
       case 'Taze_Deniz':
-        page = TazeDeniz(title: restaurant, description: description, rating: rating);
+        page = TazeDeniz(title: restaurant, description: description, rating: rating, restaurantId: id);
         break;
       case 'Tatlı_Düşler':
-        page = TatliDusler(title: restaurant, description: description, rating: rating);
+        page = TatliDusler(title: restaurant, description: description, rating: rating, restaurantId: id);
         break;
       case 'Dönerci_Ustam':
-        page = DonerciUstam(title: restaurant, description: description, rating: rating);
-    break;
-
+        page = DonerciUstam(title: restaurant, description: description, rating: rating, restaurantId: id);
+        break;
       default:
-        page = Container(); // Default empty container to handle unknown cases
+        page = Container(); // Bilinmeyen durumlar için boş bir container
     }
 
     Navigator.push(
@@ -146,7 +230,6 @@ class _KagithaneSayfasiState extends State<KagithaneSayfasi> {
       MaterialPageRoute(builder: (context) => page),
     );
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

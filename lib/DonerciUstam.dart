@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'DonerciUstamMenuPage.dart'; // Menü sayfası için import edin
+import 'masa_duzeni_sayfasi.dart'; // Masa düzeni sayfası için import edin
 
 class DonerciUstam extends StatelessWidget {
   final String title;
   final String description;
   final double rating;
+  final String restaurantId; // Restoran kimliği eklendi
 
   DonerciUstam({
     required this.title,
     required this.description,
     required this.rating,
+    required this.restaurantId, // Kimliği zorunlu hale getirdik
   });
 
   @override
@@ -99,7 +102,12 @@ class DonerciUstam extends StatelessWidget {
                     SizedBox(height: 16),
                     ElevatedButton(
                       onPressed: () {
-                        // Masa düzeni sayfasına gitmek için
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MasaDuzeniSayfasi(restaurantId: restaurantId), // Kimliği aktararak Masa Düzeni sayfasına yönlendirin
+                          ),
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.orange,

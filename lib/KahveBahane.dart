@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'KahveBahaneMenuPage.dart'; // Import the menu page
+import 'KahveBahaneMenuPage.dart'; // Menü sayfasını import edin
+import 'masa_duzeni_sayfasi.dart'; // Masa düzeni sayfasını import edin
 
 class KahveBahane extends StatelessWidget {
   final String title;
   final String description;
   final double rating;
+  final String restaurantId; // Restoran kimliğini ekleyin
 
   KahveBahane({
     required this.title,
     required this.description,
     required this.rating,
+    required this.restaurantId, // Kimliği zorunlu hale getirin
   });
 
   @override
@@ -82,7 +85,9 @@ class KahveBahane extends StatelessWidget {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => KahveBahaneMenuPage()), // Navigate to menu page
+                          MaterialPageRoute(
+                            builder: (context) => KahveBahaneMenuPage(), // Menü sayfasına yönlendirin
+                          ),
                         );
                       },
                       style: ElevatedButton.styleFrom(
@@ -97,7 +102,12 @@ class KahveBahane extends StatelessWidget {
                     SizedBox(height: 16),
                     ElevatedButton(
                       onPressed: () {
-                        // Navigate to table arrangement page
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MasaDuzeniSayfasi(restaurantId: restaurantId), // Kimliği aktararak Masa Düzeni sayfasına yönlendirin
+                          ),
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.brown[800],

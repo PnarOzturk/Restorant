@@ -1,3 +1,4 @@
+import 'package:deneme20/masa_duzeni_sayfasi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'DemirRestorantMenuPage.dart'; // Yeni sayfayı import edin
@@ -6,11 +7,13 @@ class DemirRestorant extends StatelessWidget {
   final String title;
   final String description;
   final double rating;
+  final String restaurantId; // Restoran kimliğini ekle
 
   DemirRestorant({
     required this.title,
     required this.description,
     this.rating = 4.0,
+    required this.restaurantId, // Kimliği zorunlu hale getir
   });
 
   @override
@@ -27,7 +30,7 @@ class DemirRestorant extends StatelessWidget {
         decoration: BoxDecoration(
           image: DecorationImage(
             image: NetworkImage(
-              'https://iphonexpapers.com/wp-content/uploads/papers.co-mj88-steakhouse-food-delicious-41-iphone-wallpaper-240x519.jpg'
+              'https://iphonexpapers.com/wp-content/uploads/papers.co-mj88-steakhouse-food-delicious-41-iphone-wallpaper-240x519.jpg',
             ),
             fit: BoxFit.cover,
           ),
@@ -81,7 +84,12 @@ class DemirRestorant extends StatelessWidget {
                     SizedBox(height: 16),
                     ElevatedButton(
                       onPressed: () {
-                        // Masa Düzeni butonuna tıklama işlemi
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MasaDuzeniSayfasi(restaurantId: restaurantId), // Kimliği aktar
+                          ),
+                        );
                       },
                       child: Text('Masa Düzeni', style: TextStyle(color: Colors.white)),
                       style: ElevatedButton.styleFrom(
@@ -100,7 +108,7 @@ class DemirRestorant extends StatelessWidget {
                   color: Color(0xFF5C0909), // Renk kodu düzenlendi
                   child: DropdownButton<String>(
                     hint: Text('Bize Ulaşın', style: TextStyle(color: Colors.white)),
-                    dropdownColor: Color(0xFF212121), // Renk kodu düzenlendi
+                    dropdownColor: Color(0xFF212121), // Dropdown arka plan rengi
                     style: TextStyle(color: Colors.white),
                     value: null,
                     onChanged: (String? newValue) {
