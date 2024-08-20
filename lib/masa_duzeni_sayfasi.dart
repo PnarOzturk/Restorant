@@ -1,7 +1,7 @@
-import 'package:deneme20/main.dart';
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deneme20/services/table_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
 class MasaDuzeniSayfasi extends StatefulWidget {
   final String restaurantId;
@@ -22,6 +22,9 @@ class _MasaDuzeniSayfasiState extends State<MasaDuzeniSayfasi> {
   int? selectedCapacity;
   bool isCapacitySelected = false;
   final TableService _tableService = TableService();
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  List<Map<String, dynamic>> selectedTables = []; // Seçilen masaları liste olarak saklamak için
 
   @override
   void initState() {
@@ -32,7 +35,7 @@ class _MasaDuzeniSayfasiState extends State<MasaDuzeniSayfasi> {
   Future<void> _loadTableStatuses() async {
     for (int i = 0; i < masaResimleri.length; i++) {
       try {
-        final tableDoc = await FirebaseFirestore.instance
+        final tableDoc = await _firestore
             .collection('restaurants')
             .doc(widget.restaurantId)
             .collection('tables')
@@ -67,22 +70,75 @@ class _MasaDuzeniSayfasiState extends State<MasaDuzeniSayfasi> {
     }
 
     try {
-      await _tableService.updateTableStatus(widget.restaurantId, 'table$selectedIndex', 'occupied');
+      final tableDoc = await _firestore
+          .collection('restaurants')
+          .doc(widget.restaurantId)
+          .collection('tables')
+          .doc('table$selectedIndex')
+          .get();
+
+      if (tableDoc.exists && tableDoc['status'] == 'occupied') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Bu masa dolu')),
+        );
+        return;
+      }
+
+      // Yeni seçilen masa bilgilerini listeye ekle
+      selectedTables.add({
+        'restaurantId': widget.restaurantId,
+        'tableId': 'table$selectedIndex',
+        'capacity': selectedCapacity,
+      });
+
+      // Firebase'de güncel listeyi sakla
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        final reservationRef = _firestore
+            .collection('users')
+            .doc(user.uid)
+            .collection('reservations')
+            .doc('currentReservation');
+
+        final reservationData = await reservationRef.get();
+
+        if (reservationData.exists) {
+          List<dynamic> existingTables = reservationData['tables'] ?? [];
+          existingTables.addAll(selectedTables);
+          await reservationRef.update({'tables': existingTables});
+        } else {
+          await reservationRef.set({'tables': selectedTables});
+        }
+      }
+
+      // Masanın durumunu 'occupied' olarak güncelle
+      await _firestore
+          .collection('restaurants')
+          .doc(widget.restaurantId)
+          .collection('tables')
+          .doc('table$selectedIndex')
+          .update({'status': 'occupied'});
+
+      // Masanın görselini güncelle
+      setState(() {
+        masaResimleri[selectedIndex!] = 'assets/dolu_masa.png';
+        selectedIndex = null;  // Masa seçimlerini sıfırlamak için
+        isCapacitySelected = false;
+        selectedCapacity = null;
+      });
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Masa rezerve edildi')),
       );
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => MyApp(),
-        ),
-      );
+
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Rezervasyon sırasında bir hata oluştu')),
+        SnackBar(content: Text('Rezervasyon sırasında bir hata oluştu: $e')),
       );
     }
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -128,7 +184,7 @@ class _MasaDuzeniSayfasiState extends State<MasaDuzeniSayfasi> {
                       onChanged: (value) {
                         setState(() {
                           selectedCapacity = value;
-                          isCapacitySelected = true; // Seçim yapıldı
+                          isCapacitySelected = true;
                         });
                       },
                       dropdownColor: Colors.red[50]?.withOpacity(0.8),
@@ -153,7 +209,7 @@ class _MasaDuzeniSayfasiState extends State<MasaDuzeniSayfasi> {
                     final isSelectable = isCapacitySelected && isSelectedCapacity;
 
                     return Visibility(
-                      visible: isCapacitySelected ? isSelectedCapacity : true, // Masa türü seçildiyse uygun olanlar gösterilir, seçilmediyse hepsi görünür
+                      visible: isCapacitySelected ? isSelectedCapacity : true,
                       child: GestureDetector(
                         onTap: isOccupied || !isSelectable ? null : () async {
                           setState(() {
@@ -168,7 +224,7 @@ class _MasaDuzeniSayfasiState extends State<MasaDuzeniSayfasi> {
                               .collection('restaurants')
                               .doc(widget.restaurantId)
                               .collection('tables')
-                              .doc('table$index') // Belge ID'sini 'tableX' olarak güncelledik
+                              .doc('table$index')
                               .get();
 
                           if (tableDoc.exists && tableDoc['status'] == 'occupied') {
@@ -177,7 +233,7 @@ class _MasaDuzeniSayfasiState extends State<MasaDuzeniSayfasi> {
                             );
                           } else {
                             setState(() {
-                              masaResimleri[index] = 'assets/secili_masa.png'; // Görseli güncelle
+                              masaResimleri[index] = 'assets/secili_masa.png';
                             });
                           }
                         },

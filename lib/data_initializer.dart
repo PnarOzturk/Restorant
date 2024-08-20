@@ -1,5 +1,3 @@
-// lib/data_initializer.dart
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DataInitializer {
@@ -17,11 +15,12 @@ class DataInitializer {
 
     for (String restaurantId in restaurantIds) {
       await _initializeRestaurantTables(restaurantId);
+      await _initializeRestaurantReservations(restaurantId);
     }
   }
 
   Future<void> _initializeRestaurantTables(String restaurantId) async {
-    for (int i = 0; i < 16; i++) {
+    for (int i = 1; i < 17; i++) {
       await _firestore
           .collection('restaurants')
           .doc(restaurantId)
@@ -31,5 +30,19 @@ class DataInitializer {
         'status': 'available', // Varsayılan durum olarak 'available' ayarlanabilir
       });
     }
+  }
+
+  Future<void> _initializeRestaurantReservations(String restaurantId) async {
+    // Örnek rezervasyonlar eklenebilir
+    await _firestore
+        .collection('restaurants')
+        .doc(restaurantId)
+        .collection('reservations')
+        .doc('reservation1')
+        .set({
+      'userId': 'user1',
+      'tableId': 'table1',
+      'reservationDate': Timestamp.fromDate(DateTime.now()),
+    });
   }
 }
