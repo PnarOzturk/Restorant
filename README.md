@@ -14,8 +14,7 @@ Firebase Projesi Oluşturma: Firebase Console üzerinden bir Firebase projesi ol
 Proje Bağımlılıklarını Yükleme:
 
 Proje dizininde terminal açın ve aşağıdaki komutu çalıştırarak bağımlılıkları yükleyin:
-bash
-Kodu kopyala
+
 flutter pub get
 
 Firebase Yapılandırması:
@@ -24,9 +23,9 @@ Firebase Firestore'da gerekli koleksiyonları ve belgeleri oluşturmak için uyg
 Uygulamayı Çalıştırma:
 
 Uygulamayı aşağıdaki komutla başlatabilirsiniz:
-bash
-Kodu kopyala
-flutter run
+
+flutter run 
+
 Proje Yapısı
 lib/: Uygulamanın ana kodlarını içeren dizin.
 
