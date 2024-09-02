@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:deneme20/YorumYapSayfasi.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -70,10 +71,8 @@ class _RezervasyonSayfasiState extends State<RezervasyonSayfasi> {
                         return ListTile(
                           title:
                           Text('$restaurantId - Masa numarası: $tableId'),
-                          subtitle:
-                          Text('$capacity kişilik masa'),
-                          selected:
-                          selectedReservationId == tableId,
+                          subtitle: Text('$capacity kişilik masa'),
+                          selected: selectedReservationId == tableId,
                           onTap: () {
                             setState(() {
                               selectedReservationId = tableId;
@@ -88,73 +87,96 @@ class _RezervasyonSayfasiState extends State<RezervasyonSayfasi> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      if (selectedReservationId == null ||
-                          selectedRestaurantId == null ||
-                          selectedTableIndex == null) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                              content: Text(
-                                  'Lütfen iptal edilecek rezervasyonu seçiniz.')),
-                        );
-                        return;
-                      }
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () async {
+                          if (selectedReservationId == null ||
+                              selectedRestaurantId == null ||
+                              selectedTableIndex == null) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                  content: Text(
+                                      'Lütfen iptal edilecek rezervasyonu seçiniz.')),
+                            );
+                            return;
+                          }
 
-                      try {
-                        // Seçilen rezervasyonu listeden kaldır
-                        tables.removeAt(selectedTableIndex!);
+                          try {
+                            // Seçilen rezervasyonu listeden kaldır
+                            tables.removeAt(selectedTableIndex!);
 
-                        // Eğer başka rezervasyon kalmamışsa, currentReservation dökümanını sil
-                        if (tables.isEmpty) {
-                          await FirebaseFirestore.instance
-                              .collection('users')
-                              .doc(user.uid)
-                              .collection('reservations')
-                              .doc('currentReservation')
-                              .delete();
-                        } else {
-                          // Aksi takdirde listeyi güncelle
-                          await FirebaseFirestore.instance
-                              .collection('users')
-                              .doc(user.uid)
-                              .collection('reservations')
-                              .doc('currentReservation')
-                              .update({'tables': tables});
-                        }
+                            // Eğer başka rezervasyon kalmamışsa, currentReservation dökümanını sil
+                            if (tables.isEmpty) {
+                              await FirebaseFirestore.instance
+                                  .collection('users')
+                                  .doc(user.uid)
+                                  .collection('reservations')
+                                  .doc('currentReservation')
+                                  .delete();
+                            } else {
+                              // Aksi takdirde listeyi güncelle
+                              await FirebaseFirestore.instance
+                                  .collection('users')
+                                  .doc(user.uid)
+                                  .collection('reservations')
+                                  .doc('currentReservation')
+                                  .update({'tables': tables});
+                            }
 
-                        // İptal edilen masanın durumunu 'available' olarak güncelle
-                        await FirebaseFirestore.instance
-                            .collection('restaurants')
-                            .doc(selectedRestaurantId)
-                            .collection('tables')
-                            .doc(selectedReservationId)
-                            .update({'status': 'available'});
+                            // İptal edilen masanın durumunu 'available' olarak güncelle
+                            await FirebaseFirestore.instance
+                                .collection('restaurants')
+                                .doc(selectedRestaurantId)
+                                .collection('tables')
+                                .doc(selectedReservationId)
+                                .update({'status': 'available'});
 
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                              content: Text(
-                                  'Rezervasyonunuz başarıyla iptal edildi.')),
-                        );
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                  content: Text(
+                                      'Rezervasyonunuz başarıyla iptal edildi.')),
+                            );
 
-                        // Seçimi sıfırla
-                        setState(() {
-                          selectedReservationId = null;
-                          selectedRestaurantId = null;
-                          selectedTableIndex = null;
-                        });
-                      } catch (e) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                              content: Text(
-                                  'Rezervasyon iptali sırasında bir hata oluştu: $e')),
-                        );
-                      }
-                    },
-                    child: Text('Rezervasyonu İptal et'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                    ),
+                            // Seçimi sıfırla
+                            setState(() {
+                              selectedReservationId = null;
+                              selectedRestaurantId = null;
+                              selectedTableIndex = null;
+                            });
+                          } catch (e) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                  content: Text(
+                                      'Rezervasyon iptali sırasında bir hata oluştu: $e')),
+                            );
+                          }
+                        },
+                        child: Text('Rezervasyonu İptal et',
+                            style: TextStyle(color: Colors.black12)),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                        ),
+                      ),
+                      ElevatedButton(
+                        onPressed: selectedReservationId == null
+                            ? null
+                            : () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => YorumYapSayfasi(restaurantId: selectedRestaurantId!, reservationId: selectedReservationId!)
+                            ),
+                          );
+                        },
+                        child: Text('Yorum Yap',
+                            style: TextStyle(color: Colors.black12)),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],

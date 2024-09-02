@@ -5,6 +5,7 @@ import 'kagithaneSayfasi.dart';
 import 'avcilarSayfasi.dart';
 import 'GirisYapSayfasi.dart';
 import 'RezervasyonSayfasi.dart';
+import 'YorumlarimSayfasi.dart'; // Yorumlarım sayfasını import edin.
 import 'package:deneme20/data_initializer.dart'; // Dosya yolu
 
 void main() async {
@@ -85,7 +86,7 @@ class _BodyContentState extends State<BodyContent> {
       children: [
         Positioned.fill(
           child: Image.network(
-            'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwallpaperaccess.com%2Ffull%2F5502189.jpg&f=1&nofb=1&ipt=160a6b9ea3f234a742817a483f1ff45e6ffb4657998d83ad3173e563e6fca1a1&ipo=images',
+            'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fphonewallpaperhd.com%2Fwp-content%2Fuploads%2F2020%2F09%2FFood-iPhone-7-Wallpaper-HD.jpg&f=1&nofb=1&ipt=1784005682bb17849ea229afe9a5479f9815cb9af1806243394d13c17b02c9b6&ipo=imagess',
             fit: BoxFit.cover,
           ),
         ),
@@ -133,6 +134,18 @@ class _BodyContentState extends State<BodyContent> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => RezervasyonSayfasi()), // Rezervasyon sayfasına yönlendirme
+                      );
+                    },
+                  ),
+                if (_user != null) // Kullanıcı giriş yapmışsa
+                  IconButton(
+                    icon: Icon(Icons.comment, size: 30, color: Colors.red[900]), // Yorumlarım ikonu
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => YorumlarimSayfasi(currentUserEmail: _user!.email ?? ''), // Yorumlarım sayfasına yönlendirme
+                        ),
                       );
                     },
                   ),

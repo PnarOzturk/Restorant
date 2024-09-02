@@ -64,7 +64,7 @@ class _TableScreenState extends State<TableScreen> {
                 title: Text('Masa: $tableId'),
                 subtitle: Text('Durum: $status'),
                 leading: status == 'reserved'
-                    ? Image.asset('assets/dolu_masa.png') // Rezerve masayı gösteren görsel
+                    ? Image.asset('assets/dolu_masa.png')
                     : null,
                 trailing: ElevatedButton(
                   onPressed: status == 'available'
