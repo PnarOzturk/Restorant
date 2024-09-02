@@ -24,7 +24,7 @@ class _MasaDuzeniSayfasiState extends State<MasaDuzeniSayfasi> {
   final TableService _tableService = TableService();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  List<Map<String, dynamic>> selectedTables = []; // Seçilen masaları liste olarak saklamak için
+  List<Map<String, dynamic>> selectedTables = [];
 
   @override
   void initState() {
@@ -84,14 +84,14 @@ class _MasaDuzeniSayfasiState extends State<MasaDuzeniSayfasi> {
         return;
       }
 
-      // Yeni seçilen masa bilgilerini listeye ekle
+
       selectedTables.add({
         'restaurantId': widget.restaurantId,
         'tableId': 'table$selectedIndex',
         'capacity': selectedCapacity,
       });
 
-      // Firebase'de güncel listeyi sakla
+
       final user = FirebaseAuth.instance.currentUser;
       if (user != null) {
         final reservationRef = _firestore
@@ -111,7 +111,7 @@ class _MasaDuzeniSayfasiState extends State<MasaDuzeniSayfasi> {
         }
       }
 
-      // Masanın durumunu 'occupied' olarak güncelle
+
       await _firestore
           .collection('restaurants')
           .doc(widget.restaurantId)
@@ -119,10 +119,10 @@ class _MasaDuzeniSayfasiState extends State<MasaDuzeniSayfasi> {
           .doc('table$selectedIndex')
           .update({'status': 'occupied'});
 
-      // Masanın görselini güncelle
+
       setState(() {
         masaResimleri[selectedIndex!] = 'assets/dolu_masa.png';
-        selectedIndex = null;  // Masa seçimlerini sıfırlamak için
+        selectedIndex = null;
         isCapacitySelected = false;
         selectedCapacity = null;
       });
