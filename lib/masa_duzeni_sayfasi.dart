@@ -138,8 +138,6 @@ class _MasaDuzeniSayfasiState extends State<MasaDuzeniSayfasi> {
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -156,111 +154,129 @@ class _MasaDuzeniSayfasiState extends State<MasaDuzeniSayfasi> {
             fit: BoxFit.cover,
           ),
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                padding: const EdgeInsets.symmetric(vertical: 16.0),
-                color: Colors.red[50]?.withOpacity(0.8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      'Lütfen kaç kişilik masa seçmek istediğinizi belirtin:',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),
-                    ),
-                    SizedBox(height: 8),
-                    DropdownButton<int>(
-                      value: selectedCapacity,
-                      hint: Text('Masa seçiniz', style: TextStyle(color: Colors.black)),
-                      items: [1, 2, 3, 4].map((capacity) {
-                        return DropdownMenuItem<int>(
-                          value: capacity,
-                          child: Text('$capacity kişilik masa'),
-                        );
-                      }).toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          selectedCapacity = value;
-                          isCapacitySelected = true;
-                        });
-                      },
-                      dropdownColor: Colors.red[50]?.withOpacity(0.8),
-                      style: TextStyle(color: Colors.black),
-                      iconEnabledColor: Colors.black,
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 16),
-              Expanded(
-                child: GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 4,
-                    crossAxisSpacing: 16.0,
-                    mainAxisSpacing: 16.0,
-                  ),
-                  itemCount: masaResimleri.length,
-                  itemBuilder: (context, index) {
-                    final isSelectedCapacity = ((index ~/ 4) + 1) == selectedCapacity;
-                    final isOccupied = masaResimleri[index] == 'assets/dolu_masa.png';
-                    final isSelectable = isCapacitySelected && isSelectedCapacity;
-
-                    return Visibility(
-                      visible: isCapacitySelected ? isSelectedCapacity : true,
-                      child: GestureDetector(
-                        onTap: isOccupied || !isSelectable ? null : () async {
-                          setState(() {
-                            if (selectedIndex != null) {
-                              masaResimleri[selectedIndex!] = 'assets/bos_masa.png';
-                            }
-                            selectedIndex = index;
-                            masaResimleri[index] = 'assets/secili_masa.png';
-                          });
-
-                          final tableDoc = await FirebaseFirestore.instance
-                              .collection('restaurants')
-                              .doc(widget.restaurantId)
-                              .collection('tables')
-                              .doc('table$index')
-                              .get();
-
-                          if (tableDoc.exists && tableDoc['status'] == 'occupied') {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Bu masa dolu')),
+        child: Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    color: Colors.red[50]?.withOpacity(0.8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          'Lütfen kaç kişilik masa seçmek istediğinizi belirtin:',
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),
+                        ),
+                        SizedBox(height: 8),
+                        DropdownButton<int>(
+                          value: selectedCapacity,
+                          hint: Text('Masa seçiniz', style: TextStyle(color: Colors.black)),
+                          items: [1, 2, 3, 4].map((capacity) {
+                            return DropdownMenuItem<int>(
+                              value: capacity,
+                              child: Text('$capacity kişilik masa'),
                             );
-                          } else {
+                          }).toList(),
+                          onChanged: (value) {
                             setState(() {
-                              masaResimleri[index] = 'assets/secili_masa.png';
+                              selectedCapacity = value;
+                              isCapacitySelected = true;
                             });
-                          }
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            color: Colors.white,
-                            image: DecorationImage(
-                              image: AssetImage(masaResimleri[index]),
-                              fit: BoxFit.cover,
+                          },
+                          dropdownColor: Colors.red[50]?.withOpacity(0.8),
+                          style: TextStyle(color: Colors.black),
+                          iconEnabledColor: Colors.black,
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 16),
+                  Expanded(
+                    child: GridView.builder(
+                      padding: const EdgeInsets.only(top: 120.0),  // Masaları aşağı kaydır
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 4,
+                        crossAxisSpacing: 16.0,
+                        mainAxisSpacing: 16.0,
+                        childAspectRatio: 0.75, // Masaları daha küçük yapmak için
+                      ),
+                      itemCount: masaResimleri.length,
+                      itemBuilder: (context, index) {
+                        final isSelectedCapacity = ((index ~/ 4) + 1) == selectedCapacity;
+                        final isOccupied = masaResimleri[index] == 'assets/dolu_masa.png';
+                        final isSelectable = isCapacitySelected && isSelectedCapacity;
+
+                        return Visibility(
+                          visible: isCapacitySelected ? isSelectedCapacity : true,
+                          child: GestureDetector(
+                            onTap: isOccupied || !isSelectable ? null : () async {
+                              setState(() {
+                                if (selectedIndex != null) {
+                                  masaResimleri[selectedIndex!] = 'assets/bos_masa.png';
+                                }
+                                selectedIndex = index;
+                                masaResimleri[index] = 'assets/secili_masa.png';
+                              });
+
+                              final tableDoc = await FirebaseFirestore.instance
+                                  .collection('restaurants')
+                                  .doc(widget.restaurantId)
+                                  .collection('tables')
+                                  .doc('table$index')
+                                  .get();
+
+                              if (tableDoc.exists && tableDoc['status'] == 'occupied') {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text('Bu masa dolu')),
+                                );
+                              } else {
+                                setState(() {
+                                  masaResimleri[index] = 'assets/secili_masa.png';
+                                });
+                              }
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                color: Colors.white,
+                                image: DecorationImage(
+                                  image: AssetImage(masaResimleri[index]),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                    );
-                  },
+                        );
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 16),
+                  Center(
+                    child: ElevatedButton(
+                      onPressed: _reserveTable,
+                      child: Text('Devam Et'),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Positioned(
+              top: 120.0, // Pencere görselini container'ın altında konumlandır
+              left: MediaQuery.of(context).size.width / 2 - 50,  // Ortalamak için
+              child: IgnorePointer(
+                child: Image.network(
+                  'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fpng.pngtree.com%2Fpng-clipart%2F20190705%2Foriginal%2Fpngtree-windows-icon-png-image_4296703.jpg&f=1&nofb=1&ipt=de76e92974e61c08ff0aa11fea14ebc875cde26fbd5c6c390b52da78390cde2a&ipo=images',
+                  width: 100,
+                  height: 100,
+                  fit: BoxFit.cover,
                 ),
               ),
-              SizedBox(height: 16),
-              Center(
-                child: ElevatedButton(
-                  onPressed: _reserveTable,
-                  child: Text('Devam Et'),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
